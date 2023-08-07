@@ -18,5 +18,5 @@ def test_should_find_ttt_database():
     assert "ttt" in result
 
 @query
-def show_databases_query(connection=None):
+def show_databases_query(connection: sa.engine.Connection = None):
     return connection.execute(sa.text("SHOW DATABASES"))
