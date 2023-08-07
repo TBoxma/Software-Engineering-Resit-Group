@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "software-engineering-resit-group"
+version = "0.1.0"
+description = ""
+authors = ["EfimNovikov <sawtery@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+prod    = "scripts.main:prod"
+dev     = "scripts.main:dev"
+migrate = "scripts.main:migrate"
