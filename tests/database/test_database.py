@@ -1,7 +1,5 @@
 from database.connector import MySQL
-from database.query_wrapper import query
-from database.query_wrapper import transactional_query
-
+from database.query_wrapper import *
 import sqlalchemy as sa
 
 def test_should_connect_to_database():
@@ -13,7 +11,8 @@ def test_should_connect_to_database():
     assert len(sa.inspect(engine).get_schema_names()) > 0
 
 def test_should_find_ttt_database():
-    result = [row[0] for row in show_databases_query()]
+    rows = show_databases_query()
+    result = [row[0] for row in rows]
     
     assert "ttt" in result
 
