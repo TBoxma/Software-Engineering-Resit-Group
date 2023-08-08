@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, URL
+from config.mysql import *
 
 # TODO: add configuration
 
@@ -9,6 +10,13 @@ class MySQL:
     @classmethod
     def get_engine(self):
         if self._engine is None:
+            db_url = URL.create(
+                "mysql",
+                username=MYSQL_USER,
+                password=MYSQL_PASSWORD,
+                host=MYSQL_DB_HOST,
+                database=MYSQL_DB_NAME
+            )
             db_url = "mysql://root:root@localhost/ttt"
             self._engine = create_engine(db_url)
 
