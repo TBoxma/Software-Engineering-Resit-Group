@@ -9,6 +9,8 @@ from src.backend.models.base import Base
 
 # Importing models here, so Alembic detects them
 from src.backend.models.category import Category
+from src.backend.models.task import Task
+from src.backend.models.task_category import TaskCategory
 
 from config.mysql import *
 

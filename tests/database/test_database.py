@@ -1,9 +1,11 @@
 from database.connector import MySQL
-from database.query_wrapper import *
+from database.session_wrapper import *
 from config.mysql import MYSQL_DB_NAME
-import sqlalchemy as sa
 
-def test_should_connect_to_database():
+import sqlalchemy as sa
+from sqlalchemy.orm import Session
+
+def test_should_connect_to_mysql():
 
     engine = MySQL.get_engine()
     connection = engine.connect()
@@ -18,5 +20,5 @@ def test_should_find_ttt_database():
     assert MYSQL_DB_NAME in result
 
 @query
-def show_databases_query(connection: sa.engine.Connection = None):
-    return connection.execute(sa.text("SHOW DATABASES"))
+def show_databases_query(session: Session):
+    return session.execute(sa.text("SHOW DATABASES"))
