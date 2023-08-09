@@ -9,3 +9,12 @@ On first run:
 
 To run tests, execute: `poetry run pytest`\
 To start application in dev mode, run: `poetry run dev`
+
+## Database setup
+For now, you have to connect your own database to make it work. pyproject.toml contains mysqlclient and mysql. Comment out one of them.
+
+1. Install MySQL on your pc, installation is OS dependent
+2. Create a user and a database for this project within MySQL
+3. Add the credentials for the account and database you made to config/mysql.py
+4. Run poetry run pytest
+5. Ask Efim if anythong breaks
