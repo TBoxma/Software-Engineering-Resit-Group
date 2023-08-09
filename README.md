@@ -15,6 +15,6 @@ For now, you have to connect your own database to make it work. pyproject.toml c
 
 1. Install MySQL on your pc, installation is OS dependent
 2. Create a user and a database for this project within MySQL
-3. Add the credentials for the account and database you made to config/mysql.py
+3. Rename config/mysql_template.py to config/mysql_template.py and add your own credentials
 4. Run poetry run pytest
 5. Ask Efim if anythong breaks
