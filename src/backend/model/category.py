@@ -1,10 +1,9 @@
-from typing import List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from src.backend.models.base import Base
+from . import Base
 
 class Category(Base):
     __tablename__ = "category"

@@ -3,7 +3,7 @@ from sqlalchemy import Column, ForeignKey, String, Table
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
-from src.backend.models.base import Base
+from . import Base
 
 class TaskCategory(Base):
     __tablename__ = "task_category"

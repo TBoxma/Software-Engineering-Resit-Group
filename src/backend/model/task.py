@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from src.backend.models.base import Base
+from . import Base
 
 class Task(Base):
     __tablename__ = "task"
