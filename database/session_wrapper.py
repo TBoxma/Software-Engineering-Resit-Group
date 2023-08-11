@@ -12,8 +12,8 @@ def query(exec_query, transactional=False):
             Defaults to `False`.
 
     - Returns:
-        `Callable`: A function that connects to the `Engine`, executes the query, returns the result,
-        and closes the connection.
+        `Callable`: A function that creates new session, executes the query, returns the result,
+        and closes the session.
     """
     def wrapper(*args, **kwargs):
         with Session(MySQL.get_engine()) as session:
