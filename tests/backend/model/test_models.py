@@ -10,7 +10,11 @@ from src.backend.model.task import Task
 from src.backend.model.task_category import TaskCategory
 from src.backend.model.task_time import TaskTime
 
-from tests.testdata import having_created_category, having_created_task
+def sample_category(name: str = None) -> Category:
+    return Category(name="Test Category") if not name else Category(name=name)
+
+def sample_task(name: str = None) -> Task:
+    return Task(name="Test task") if not name else Task(name=name)
 
 @pytest.fixture(autouse=True)
 def session():
@@ -24,7 +28,7 @@ def session():
     session.close()
 
 def test_should_create_category(session: Session):
-    category = having_created_category()
+    category = sample_category()
     
     session.add(category)
     session.flush()
@@ -34,7 +38,7 @@ def test_should_create_category(session: Session):
     assert category_returned == category
 
 def test_should_create_task(session: Session):
-   task = having_created_task()
+   task = sample_task()
 
    session.add(task)
    session.flush()
@@ -45,8 +49,8 @@ def test_should_create_task(session: Session):
 
 def test_should_create_task_correct_category(session: Session):
    
-   category = having_created_category()
-   task = having_created_task()
+   category = sample_category()
+   task = sample_task()
 
    task.categories.append(category)
 
@@ -60,9 +64,9 @@ def test_should_create_task_correct_category(session: Session):
    assert category_name == "Test Category"
 
 def test_should_create_task_multiple_categories(session: Session):
-    category1 = having_created_category(name="First category")
-    category2 = having_created_category(name="Second category")
-    task = having_created_task()
+    category1 = sample_category(name="First category")
+    category2 = sample_category(name="Second category")
+    task = sample_task()
 
     task.categories.append(category1)
     task.categories.append(category2)
@@ -86,7 +90,7 @@ def test_should_create_task_multiple_categories(session: Session):
     assert task_category2.category_id == category2.id
 
 def test_should_correctly_add_durations_to_task(session: Session):
-    task = having_created_task()
+    task = sample_task()
     duration1 = TaskTime(task_day=date.today(), task_id=task.id, duration=60)
     duration2 = TaskTime(task_day=date(2023, 8, 10), task_id=task.id, duration=60)
 
@@ -113,7 +117,7 @@ def test_should_correctly_add_durations_to_task(session: Session):
 
 def test_should_fail_to_add_duration_same_day_same_task(session: Session):
     with pytest.raises(IntegrityError, match='Duplicate entry'):
-        task = having_created_task()
+        task = sample_task()
         duration1 = TaskTime(task_day=date.today(), task_id=task.id, duration=60)
         duration2 = TaskTime(task_day=date.today(), task_id=task.id, duration=10)
 
