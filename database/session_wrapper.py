@@ -1,5 +1,7 @@
 from database.connector import MySQL
 
+from sqlalchemy.orm import Session
+
 def query(exec_query, transactional=False):
     """
     Manage connections for executing queries.
@@ -10,17 +12,13 @@ def query(exec_query, transactional=False):
             Defaults to `False`.
 
     - Returns:
-        `Callable`: A function that connects to the `Engine`, executes the query, returns the result,
-        and closes the connection.
+        `Callable`: A function that creates new session, executes the query, returns the result,
+        and closes the session.
     """
     def wrapper(*args, **kwargs):
-        with MySQL.get_engine().connect() as con:
-            kwargs['connection'] = con
-            result = exec_query(*args, **kwargs)
-
-            if transactional:
-                con.commit()
-            else:
-                return result
+        with Session(MySQL.get_engine()) as session:
+            kwargs['session'] = session
+            
+            return exec_query(*args, **kwargs)
     
     return wrapper
