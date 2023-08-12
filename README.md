@@ -23,7 +23,7 @@ For now, you have to connect your own database to make it work. pyproject.toml c
 
 ### Developing with Alembic
 After any changes to existing models or creation of new ones:
-1. Make sure new model is imported in `alemic/env.py`
+1. Make sure new model is imported in `alembic/env.py`
 2. Run `alembic revision --autogenerate -m <your_message_here> `
 3. To sync local database, run: `alembic upgrade head`
 
