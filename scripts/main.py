@@ -1,16 +1,17 @@
 from subprocess import call
+from src.app import main
 
 # Run project in production mode
 def prod():
     print ("Hello Prod!")
-    call(["python", "../src/app.py"])
+    main()
 
 
 # Run project in dev mode
 def dev():
     migrate()
     print ("Hello Dev!")
-    call(["python", "../src/app.py"])
+    main()
 
 
 # Run database migration
