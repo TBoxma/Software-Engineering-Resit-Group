@@ -23,54 +23,40 @@ class CLI:
         return click.prompt(question, type=str)
      
     def handle_new_task(self, *args:str) -> None:
-        # Attributes here:
-        task_name = "new task"
-        correct_input = True
+
+        given_attributes= {}
+        given_attributes["name"] = "new task"
+
+        # List of attributes that the user needs to give:
+        needs={}
+        needs["name"] = True
+        needs["id"] = False
+        needs["categories"] = False
+
+        # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
+        print(len(args[0]))
         if(len(args[0])>0):
             for unparsed_attribute in args[0]:
                 parsed_attribute = unparsed_attribute.split(':')
                 if (len(parsed_attribute) == 2):
-                    match parsed_attribute[0]: #Case statement for each passed attribute.
-                        case "name":
-                            task_name = parsed_attribute[1]
-                        case _:
-                            correct_input = False
-                else:
-                    correct_input = False
-        else:
-            correct_input = False
-        if not correct_input:
-            task_name = click.prompt("name", type=str)
-        #Call init function here:
-        print("New task: (", task_name, ")")
+                    if(needs.get(parsed_attribute[0])):
+                        try:
+                            given_attributes[parsed_attribute[0]] = parsed_attribute[1]
+                        except KeyError:
+                            continue
+                        try:
+                            needs[parsed_attribute[0]] = False
+                        except KeyError:
+                            continue
+                        
+        #get the needs that haven't been set yet
+        needs_to_do = {key : val for key, val in needs.items() if val == True}
+        if(len(needs_to_do)>0):
+            for need in needs_to_do:
+                given_attributes[need] = click.prompt(need, type=str)
+        
+        print("Creating new task with attributes", str(given_attributes))
 
-    def handle_update_task(self, *args:str)-> None:
-        # Attributes here:
-        task_name = "new task"
-        id = int(args[0][0])
-        print(id)
-        if not (-1<id<999999): #Exists function here
-            print(id, " is not a valid id")
-            return
-        correct_input = True
-        if(len(args[0])>0):
-            for unparsed_attribute in args[0][1:]:
-                parsed_attribute = unparsed_attribute.split(':')
-                if (len(parsed_attribute) == 2):
-                    match parsed_attribute[0]: #Case statement for each passed attribute.
-                        case "name":
-                            task_name = parsed_attribute[1]
-                        case _:
-                            correct_input = False
-                else:
-                    correct_input = False
-        else:
-            correct_input = False
-        if not correct_input:
-            task_name = click.prompt("id", type=int)
-            task_name = click.prompt("name", type=str)
-        #Call update function here:
-        print("Changed task ", id, ": (", task_name, ")")
     
     def start(self):
         while True:
@@ -91,9 +77,21 @@ class CLI:
                 case "update":
                     match command_args[1]:
                         case "task":
-                            self.handle_update_task(command_args[2:])
+                            print("update a task, tbd")
                         case "category":
-                            print("update a category, tbd by Efim")
+                            print("update a category, tbd")
+                case "show":
+                    match command_args[1]:
+                        case "task":
+                            print("show a task, tbd")
+                        case "category":
+                            print("show a category, tbd")
+                case "del":
+                    match command_args[1]:
+                        case "task":
+                            print("delete a task, tbd")
+                        case "category":
+                            print("delete a category, tbd")
 
 
 
