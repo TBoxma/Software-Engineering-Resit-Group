@@ -23,16 +23,19 @@ class BaseModelApi:
     
     @classmethod
     @query
-    def add(cls, name: str, session: Session):
+    def add(cls, name: str, session: Session) -> int:
         """
         Adds a new instance of the model to the database.
 
         :param name: The name attribute of a model.
+        :return: id of created object
         """
-        model: Category | Task = cls.model(name=name)
+        model: Category | Task = cls().model(name=name)
 
         session.add(model)
         session.commit()
+
+        return model.id
 
     @classmethod
     @query
@@ -42,7 +45,7 @@ class BaseModelApi:
 
         :param name: The new name for the model.
         """
-        model: Category | Task = cls._get_model_by_name(cls, name, session)
+        model: Category | Task = cls()._get_model_by_name(cls, name, session)
 
         model.name = name
         session.commit()
@@ -55,7 +58,7 @@ class BaseModelApi:
 
         :param name: The name of the model.
         """
-        model: Category | Task = cls._get_model_by_name(cls, name, session)
+        model: Category | Task = cls()._get_model_by_name(cls, name, session)
 
         if type(model) is Category:
             model.tasks.clear()
@@ -67,7 +70,7 @@ class BaseModelApi:
     
     @classmethod
     @query
-    def get_by_name(cls, name: str, session: Session) -> Category:
+    def get_by_name(cls, name: str, session: Session) -> Category | Task:
         """
         Retrieves a model instance by its name.
 
@@ -76,7 +79,7 @@ class BaseModelApi:
         :raises: CategoryNotFoundException: If the category with the given name is not found.
         :raises: TaskNotFoundException: If the task with the given name is not found.
         """
-        return cls._get_model_by_name(cls, name, session)
+        return cls()._get_model_by_name(cls(), name, session)
     
     def _get_model_by_name(self, name: str, session: Session) -> Category | Task:
         """

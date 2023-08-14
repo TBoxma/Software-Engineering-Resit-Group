@@ -1,5 +1,4 @@
 from datetime import date, datetime
-from nis import cat
 from database.session_wrapper import query
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -23,7 +22,7 @@ class TaskApi(BaseModelApi):
 
     @classmethod
     @query
-    def add_task(cls, name: str, category_id: int, session: Session):
+    def add(cls, name: str, category_id: int, session: Session) -> int:
         """
         Add a new task with the given name and associated with a specific category.
 
@@ -37,11 +36,13 @@ class TaskApi(BaseModelApi):
         task.categories.append(category)
 
         session.add(task)
-        session.commit()    
+        session.commit()
+
+        return task.id    
 
     @classmethod
     @query
-    def add_duration(cls, duration: int, task_id: int, session: Session):
+    def add_duration(cls, day: date, duration: int, task_id: int, session: Session):
         """
         Add a task duration entry to the database.
 
@@ -54,7 +55,7 @@ class TaskApi(BaseModelApi):
         """
 
         task: Task = session.get(Task, task_id)
-        task_time: TaskTime = TaskTime(task_day=date.today(), task_id=task_id, duration=duration)
+        task_time: TaskTime = TaskTime(task_day=day, task_id=task_id, duration=duration)
 
         task.durations.append(task_time)
 
