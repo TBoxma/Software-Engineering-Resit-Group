@@ -132,7 +132,15 @@ class CLI:
                 case "show":
                     match command_args[1]:
                         case "task":
-                            print("show a task, tbd")
+                            if(len(command_args) == 2):
+                                tasks = TaskApi.list_all()
+                                for task in tasks:
+                                    print(task.id, ", ", task.name)
+                            else:
+                                task = TaskApi.get_by_name(command_args[2])
+                                print(task.id, ", ", task.name)
+                            
+
                         case "category":
                             print("show a category, tbd")
                 case "del":
