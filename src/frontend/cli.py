@@ -59,10 +59,13 @@ class CLI:
         needs_to_do = {key : val for key, val in needs.items() if val == True}
         if(len(needs_to_do)>0):
             for need in needs_to_do:
-                given_attributes[need] = click.prompt(need, type=str)
+                given_attributes[need] = click.prompt(need, type=str, default="")
         
         print("Creating new task with attributes", str(given_attributes))
-        TaskApi.add(given_attributes["name"], given_attributes["categories"].split(','))
+        categories = given_attributes["categories"].split(',')
+        if len(categories) == 1 and categories[0]=="":
+            categories = []
+        TaskApi.add(given_attributes["name"], categories)
 
     
     def start(self):
