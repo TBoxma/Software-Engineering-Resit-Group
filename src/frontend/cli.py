@@ -136,11 +136,12 @@ class CLI:
                         case "category":
                             print("show a category, tbd")
                 case "del":
-                    match command_args[1]:
-                        case "task":
-                            print("delete a task, tbd")
-                        case "category":
-                            print("delete a category, tbd")
+                    if(len(command_args) > 1):
+                        match command_args[1]:
+                            case "task":
+                                TaskApi.delete_by_name(command_args[2])
+                            case "category":
+                                CategoryApi.delete_by_name(command_args[2])
                 case _:
                     print("Type 'help' for a list of commands")
 
