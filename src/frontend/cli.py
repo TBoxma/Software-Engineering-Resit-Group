@@ -139,10 +139,14 @@ class CLI:
                             else:
                                 task = TaskApi.get_by_name(command_args[2])
                                 print(task.id, ", ", task.name)
-                            
-
                         case "category":
-                            print("show a category, tbd")
+                            if(len(command_args) == 2):
+                                tasks = CategoryApi.list_all()
+                                for task in tasks:
+                                    print(task.id, ", ", task.name)
+                            else:
+                                task = CategoryApi.get_by_name(command_args[2])
+                                print(task.id, ", ", task.name)
                 case "del":
                     if(len(command_args) > 1):
                         match command_args[1]:
