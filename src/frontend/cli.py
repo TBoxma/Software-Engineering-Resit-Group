@@ -1,4 +1,5 @@
 import click
+from ..backend.api.task_api import TaskApi
 
 class CLI:
     helper_string = '\n'.join([
@@ -30,12 +31,13 @@ class CLI:
 
         given_attributes= {}
         given_attributes["name"] = "new task"
+        given_attributes["categories"] = ""
 
         # List of attributes that the user needs to give:
         needs={}
         needs["name"] = True
         needs["id"] = False
-        needs["categories"] = False
+        needs["categories"] = True
 
         # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
         print(len(args[0]))
@@ -60,6 +62,7 @@ class CLI:
                 given_attributes[need] = click.prompt(need, type=str)
         
         print("Creating new task with attributes", str(given_attributes))
+        TaskApi.add(given_attributes["name"], given_attributes["categories"].split(','))
 
     
     def start(self):
