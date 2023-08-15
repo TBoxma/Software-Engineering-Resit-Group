@@ -10,4 +10,4 @@ class Category(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255), unique=True)
-    tasks = relationship('Task', secondary='task_category', back_populates='categories', lazy='selectin')
+    tasks = relationship('Task', secondary='task_category', back_populates='categories', lazy='selectin', cascade='all, delete')
