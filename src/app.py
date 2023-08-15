@@ -1,5 +1,5 @@
-from scripts.cli import CLI
+from src.frontend.cli import CLI
 
-def main():
+def serve_cli():
     cli_program = CLI("command_line_interface")
     cli_program.start()
