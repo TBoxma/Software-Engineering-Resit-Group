@@ -2,9 +2,13 @@ import click
 
 class CLI:
     helper_string = '\n'.join([
-        "help:    get all possible commands as a list",
-        "add:     create a new entry(not implemented)",
-        "exit:    exit the program"
+        "help:         get all possible commands as a list",
+        "add:          create a new entry(not implemented)",
+        "exit:         exit the program",
+        "new task:     add a task",
+        "update task:  change task attributes",
+        "del task:     delete a task",
+        "exit:         exit the program"
     ])
     
     def __init__(self, name="") -> None:
@@ -69,11 +73,14 @@ class CLI:
                     break
                 case "new":
                     # attributes:
-                    match command_args[1]:
-                        case "task":
-                            self.handle_new_task(command_args[2:])
-                        case "category":
-                            print("initialise and add a category, tbd by Efim")
+                    if(len(command_args) > 1):
+                        match command_args[1]:
+                            case "task":
+                                self.handle_new_task(command_args[2:])
+                            case "category":
+                                print("initialise and add a category, tbd by Efim")
+                    else:
+                        print("type 'new task' or 'new category'")
                 case "update":
                     match command_args[1]:
                         case "task":
@@ -92,6 +99,8 @@ class CLI:
                             print("delete a task, tbd")
                         case "category":
                             print("delete a category, tbd")
+                case _:
+                    print("Type 'help' for a list of commands")
 
 
 
