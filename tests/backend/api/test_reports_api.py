@@ -5,6 +5,7 @@ from src.backend.model.category import Category
 from src.backend.model.task import Task
 from datetime import date
 from src.backend.api.reports_api import ReportsApi
+from uuid import uuid4
 
 
 def create_testdata_temp():
@@ -41,11 +42,10 @@ def create_testdata_temp():
     TaskApi.add_duration(date(2023, 7, 4), 10, task33)
 
 def test_me():
-    tmp1 = CategoryApi.list_all()
-    for task in tmp1[0].tasks:
-        print(task.name)
-
-    tmp2 = TaskApi.list_all()
-    print(tmp2)
+    u = str(uuid4)
+    TaskApi.add(u + "_TestTask", ["TestCategory1","TestCategory2","TestCategory3"])
+    res = TaskApi.get_by_name(u + "_TestTask")
+    for cat in res.categories:
+        print(cat.name)
 
 test_me()

@@ -2,7 +2,7 @@ from database.connector import MySQL
 
 from sqlalchemy.orm import Session
 
-def query(exec_query, transactional=False):
+def query(exec_query):
     """
     Manage connections for executing queries.
 
