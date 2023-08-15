@@ -49,7 +49,7 @@ class BaseModelApi:
 
         :param name: The new name for the model.
         """
-        model: Category | Task = cls()._get_model_by_name(cls, name, session)
+        model: Category | Task = cls()._get_model_by_name(name, session)
 
         model.name = name
         session.commit()
@@ -62,7 +62,7 @@ class BaseModelApi:
 
         :param name: The name of the model.
         """
-        model: Category | Task = cls()._get_model_by_name(cls, name, session)
+        model: Category | Task = cls()._get_model_by_name(name, session)
 
         if model is Category:
             model.tasks.clear()
