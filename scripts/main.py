@@ -1,8 +1,6 @@
-
-# Run project in production mode
 from src.app import serve_cli
 
-
+# Run project in production mode
 def prod():
     print ("Hello Prod!")
     serve_cli()
