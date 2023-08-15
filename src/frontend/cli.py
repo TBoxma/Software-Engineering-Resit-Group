@@ -1,4 +1,7 @@
 import click
+from src.backend.model.category import Category
+
+from src.backend.model.task import Task
 from ..backend.api.task_api import TaskApi
 from ..backend.api.category_api import CategoryApi
 
@@ -133,20 +136,32 @@ class CLI:
                     match command_args[1]:
                         case "task":
                             if(len(command_args) == 2):
-                                tasks = TaskApi.list_all()
+                                tasks: list[Task] = TaskApi.list_all()
                                 for task in tasks:
-                                    print(task.id, ", ", task.name)
+                                    categories = [category.name for category in task.categories]
+                                    print("Task name: "+task.name)
+                                    print("Task categories: "+", ".join(categories))
+                                    print()
                             else:
-                                task = TaskApi.get_by_name(command_args[2])
-                                print(task.id, ", ", task.name)
+                                task: Task = TaskApi.get_by_name(command_args[2])
+                                categories = [category.name for category in task.categories]
+                                print("Task name: "+task.name)
+                                print("Task categories: "+", ".join(categories))
+                                print()
                         case "category":
                             if(len(command_args) == 2):
-                                tasks = CategoryApi.list_all()
-                                for task in tasks:
-                                    print(task.id, ", ", task.name)
+                                categories: list[Category] = CategoryApi.list_all()
+                                for category in categories:
+                                    tasks = [task.name for task in category.tasks]
+                                    print("Category name: "+category.name)
+                                    print("Category tasks: "+", ".join(tasks))
+                                    print()
                             else:
-                                task = CategoryApi.get_by_name(command_args[2])
-                                print(task.id, ", ", task.name)
+                                category: Category = CategoryApi.get_by_name(command_args[2])
+                                tasks = [task.name for task in category.tasks]
+                                print("Category name: "+category.name)
+                                print("Category tasks: "+", ".join(tasks))
+                                print()
                 case "del":
                     if(len(command_args) > 1):
                         match command_args[1]:
