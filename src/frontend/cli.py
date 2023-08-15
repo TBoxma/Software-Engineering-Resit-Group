@@ -171,7 +171,7 @@ class CLI:
                             case "task":
                                 TaskApi.delete_by_name(' '.join(command_args[2:]))
                             case "category":
-                                CategoryApi.delete_by_name(command_args[2])
+                                CategoryApi.delete_by_name(' '.join(command_args[2:]))
                 case _:
                     print("Type 'help' for a list of commands")
 
