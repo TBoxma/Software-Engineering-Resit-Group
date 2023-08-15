@@ -64,6 +64,11 @@ class BaseModelApi:
         """
         model: Category | Task = cls()._get_model_by_name(name, session)
         
+        if model is Category:
+            model.tasks.clear()
+        else:
+            model.categories.clear()
+        
         session.delete(model)
         session.commit() 
     
