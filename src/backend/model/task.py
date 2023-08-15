@@ -13,5 +13,5 @@ class Task(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255), unique=True)
-    categories = relationship('Category', secondary='task_category', back_populates='tasks')
+    categories = relationship('Category', secondary='task_category', back_populates='tasks', lazy='selectin')
     durations: Mapped[List[TaskTime]] = relationship()

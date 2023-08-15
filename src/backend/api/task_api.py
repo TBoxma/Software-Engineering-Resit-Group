@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from typing import List
 from database.session_wrapper import query
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -38,7 +39,7 @@ class TaskApi(BaseModelApi):
         session.add(task)
         session.commit()
 
-        return task.id    
+        return task.id  
 
     @classmethod
     @query

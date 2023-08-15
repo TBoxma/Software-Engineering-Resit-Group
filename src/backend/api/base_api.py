@@ -1,5 +1,4 @@
-from unicodedata import category
-from database.session_wrapper import query
+from typing import List
 from database.session_wrapper import query
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -36,6 +35,11 @@ class BaseModelApi:
         session.commit()
 
         return model.id
+
+    @classmethod
+    @query
+    def list_all(cls, session: Session) -> List[Category] | List[Task]:
+        return session.scalars(select(cls().model)).all()
 
     @classmethod
     @query

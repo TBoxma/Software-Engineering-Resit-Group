@@ -41,8 +41,11 @@ def create_testdata_temp():
     TaskApi.add_duration(date(2023, 7, 4), 10, task33)
 
 def test_me():
-    names = ["TestTask11", "TestTask12", "TestTask13"]
-    tmp = ReportsApi.report_percentage_tasks(date(2023, 8, 1), date(2023, 8, 31), names)
-    print(tmp)
+    tmp1 = CategoryApi.list_all()
+    for task in tmp1[0].tasks:
+        print(task.name)
+
+    tmp2 = TaskApi.list_all()
+    print(tmp2)
 
 test_me()
