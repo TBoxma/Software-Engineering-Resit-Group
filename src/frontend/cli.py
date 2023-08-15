@@ -120,7 +120,7 @@ class CLI:
                             case "task":
                                 self.handle_new_task(command_args[2:])
                             case "category":
-                                print("initialise and add a category, tbd by Efim")
+                                self.handle_new_category(command_args[2:])
                     else:
                         print("type 'new task' or 'new category'")
                 case "update":
