@@ -9,5 +9,5 @@ class Category(Base):
     __tablename__ = "category"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(255))
-    tasks = relationship('Task', secondary='task_category', back_populates='categories')
+    name: Mapped[str] = mapped_column(String(255), unique=True)
+    tasks = relationship('Task', secondary='task_category', back_populates='categories', lazy='selectin')
