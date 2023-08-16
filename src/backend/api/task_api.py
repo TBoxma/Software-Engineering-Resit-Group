@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import List
+from typing import Sequence
 from database.session_wrapper import query
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -23,7 +23,7 @@ class TaskApi(BaseModelApi):
 
     @classmethod
     @query
-    def add(cls, name: str, category_id: int, session: Session) -> int:
+    def add(cls, name: str, category_names: list[str], session: Session) -> int:
         """
         Add a new task with the given name and associated with a specific category.
 
@@ -31,10 +31,11 @@ class TaskApi(BaseModelApi):
             name (str): The name of the task to be added.
             category_name (str): The name of the category to associate the task with.
         """
-        category: Category = session.get(Category, category_id)
+        stm = select(Category).where(Category.name.in_(category_names))
+        categories: list[Category] = session.scalars(stm).all()
 
         task: Task = Task(name=name)
-        task.categories.append(category)
+        task.categories.extend(categories)
 
         session.add(task)
         session.commit()

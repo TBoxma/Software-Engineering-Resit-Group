@@ -49,7 +49,7 @@ class BaseModelApi:
 
         :param name: The new name for the model.
         """
-        model: Category | Task = cls()._get_model_by_name(cls, name, session)
+        model: Category | Task = cls()._get_model_by_name(name, session)
 
         model.name = name
         session.commit()
@@ -62,9 +62,9 @@ class BaseModelApi:
 
         :param name: The name of the model.
         """
-        model: Category | Task = cls()._get_model_by_name(cls, name, session)
-
-        if type(model) is Category:
+        model: Category | Task = cls()._get_model_by_name(name, session)
+        
+        if model is Category:
             model.tasks.clear()
         else:
             model.categories.clear()
@@ -83,7 +83,7 @@ class BaseModelApi:
         :raises: CategoryNotFoundException: If the category with the given name is not found.
         :raises: TaskNotFoundException: If the task with the given name is not found.
         """
-        return cls()._get_model_by_name(cls(), name, session)
+        return cls()._get_model_by_name(name, session)
     
     def _get_model_by_name(self, name: str, session: Session) -> Category | Task:
         """
@@ -92,7 +92,7 @@ class BaseModelApi:
         :param name: The name of the model.
         :return: An instance of Category or Task.
         """
-        if type(self.model) is Category:
+        if self.model is Category:
             category: Category = session.scalar(select(Category).where(Category.name == name))
 
             if not category:
@@ -100,7 +100,7 @@ class BaseModelApi:
             
             return category
         
-        elif type(self.model) is Task:
+        elif self.model is Task:
             task: Task = session.scalar(select(Task).where(Task.name == name))
 
             if not task:
