@@ -1,6 +1,6 @@
 class Function:
     #handle a command
-    def command(*args:str) -> None:
+    def execute(self, *args:str) -> None:
         return
     
     def get_description(self, *args:str) -> [str,str]:

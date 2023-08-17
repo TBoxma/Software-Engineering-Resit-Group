@@ -20,6 +20,6 @@ class Help(Function):
         return ['help', "get all possible commands as a list.  e.g. 'help new'"]
 #help, new, new, update, del, exit
 
-    def command(self, *args:str) -> None:
+    def execute(self, *args:str) -> None:
         if len(args)==0:
             

@@ -22,7 +22,7 @@ class Delete(Function):
     def category(self, *args:str):
         CategoryApi.delete_by_name(' '.join(args))
 
-    def command(self, *args:str) -> None:
+    def execute(self, *args:str) -> None:
         if len(args>1):
             match args[0]:
                 case 'task':

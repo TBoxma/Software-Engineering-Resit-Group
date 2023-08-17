@@ -47,7 +47,7 @@ class Show(Function):
             print()
     
 
-    def command(self, *args:str) -> None:
+    def execute(self, *args:str) -> None:
         if len(args>1):
             match args[0]:
                 case 'task':
