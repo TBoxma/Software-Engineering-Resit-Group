@@ -1,8 +1,7 @@
 from datetime import date, datetime
-from typing import Sequence
 from database.session_wrapper import query
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from src.backend.api.base_api import BaseModelApi
 from src.backend.model.category import Category
 
@@ -23,7 +22,7 @@ class TaskApi(BaseModelApi):
 
     @classmethod
     @query
-    def add(cls, name: str, category_names: list[str], session: Session) -> int:
+    def add(cls, name: str, category_names: list[str], session: Session):
         """
         Add a new task with the given name and associated with a specific category.
 
@@ -40,11 +39,9 @@ class TaskApi(BaseModelApi):
         session.add(task)
         session.commit()
 
-        return task.id  
-
     @classmethod
     @query
-    def add_duration(cls, day: date, duration: int, task_id: int, session: Session):
+    def add_duration(cls, day: date, duration: int, task_name: str, session: Session):
         """
         Add a task duration entry to the database.
 
@@ -56,8 +53,8 @@ class TaskApi(BaseModelApi):
             task_id (int): The ID of the task to which the duration will be added.
         """
 
-        task: Task = session.get(Task, task_id)
-        task_time: TaskTime = TaskTime(task_day=day, task_id=task_id, duration=duration)
+        task: Task = cls()._get_model_by_name(task_name, session)
+        task_time: TaskTime = TaskTime(task_day=day, task_id=task.id, duration=duration)
 
         task.durations.append(task_time)
 
@@ -67,7 +64,7 @@ class TaskApi(BaseModelApi):
 
     @classmethod
     @query
-    def add_duration_by_start_end_time(cls, start: str, end: str, task_id: int, session: Session):
+    def add_duration_by_start_end_time(cls, day: date, start: str, end: str, task_name: str, session: Session):
         """
         Add a task duration to the database based on start and end times.
 
@@ -87,11 +84,10 @@ class TaskApi(BaseModelApi):
             the time difference based on these times and adds the calculated duration as a TaskTime
             entry to the provided task.
         """
-
-        task: Task = session.get(Task, task_id)
-
         duration = cls._calculate_duration(start, end)
-        task_time: TaskTime = TaskTime(task_day=date.today(), task_id=task_id, duration=duration)
+
+        task: Task = cls()._get_model_by_name(task_name, session)
+        task_time: TaskTime = TaskTime(task_day=day, task_id=task.id, duration=duration)
 
         task.durations.append(task_time)
 
@@ -101,17 +97,35 @@ class TaskApi(BaseModelApi):
 
     @classmethod
     @query
-    def update_task_duration(cls, day: date, task_id: int, duration: int, session: Session):
+    def get_task_time(cls, day: date, task_name: str, session: Session) -> TaskTime:
+        task: Task = cls()._get_model_by_name(task_name, session)
+
+        task_time: TaskTime = session.scalar(select(TaskTime)
+                                             .where(and_(TaskTime.task_id == task.id, TaskTime.task_day == day)))
+        return task_time
+
+    @classmethod
+    @query
+    def list_all_task_times(cls, task_name: str, session: Session) -> list[TaskTime]:
+        task: Task = cls()._get_model_by_name(task_name, session)
+
+        task_times: list[TaskTime] = session.scalars(select(TaskTime)
+                                             .where(TaskTime.task_id == task.id))
+        return task_times        
+
+    @classmethod
+    @query
+    def update_task_duration(cls, day: date, task_name: str, duration: int, session: Session):
         """
-        Update the duration of a task for a specific day using the provided session.
+        Update the duration of a task for a specific day.
 
         Args:
             day (date): The date for which the task duration should be updated.
             task_id (int): The ID of the task for which the duration should be updated.
             duration (int): The amount by which to increase the task's duration.
         """
-
-        task_time: TaskTime = session.get(TaskTime, (day, task_id))
+        task: Task = cls()._get_model_by_name(task_name, session)
+        task_time: TaskTime = session.get(TaskTime, (day, task.id))
         task_time.duration += duration
 
         session.commit()

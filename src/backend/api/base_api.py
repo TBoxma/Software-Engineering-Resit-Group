@@ -22,7 +22,7 @@ class BaseModelApi:
     
     @classmethod
     @query
-    def add(cls, name: str, session: Session) -> int:
+    def add(cls, name: str, session: Session):
         """
         Adds a new instance of the model to the database.
 
@@ -34,8 +34,6 @@ class BaseModelApi:
         session.add(model)
         session.commit()
 
-        return model.id
-
     @classmethod
     @query
     def list_all(cls, session: Session) -> List[Category] | List[Task]:
@@ -43,7 +41,7 @@ class BaseModelApi:
 
     @classmethod
     @query
-    def update_by_name(cls, name: str, session: Session):
+    def update_by_name(cls, name: str, new_name: str, session: Session):
         """
         Updates the name of an existing model instance based on its name.
 
@@ -51,7 +49,7 @@ class BaseModelApi:
         """
         model: Category | Task = cls()._get_model_by_name(name, session)
 
-        model.name = name
+        model.name = new_name
         session.commit()
     
     @classmethod
@@ -68,6 +66,7 @@ class BaseModelApi:
             model.tasks.clear()
         else:
             model.categories.clear()
+            model.durations.clear()
         
         session.delete(model)
         session.commit() 
@@ -94,7 +93,6 @@ class BaseModelApi:
         """
         if self.model is Category:
             category: Category = session.scalar(select(Category).where(Category.name == name))
-
             if not category:
                 raise CategoryNotFoundException(f"Category with name '{name}' was not found")
             
