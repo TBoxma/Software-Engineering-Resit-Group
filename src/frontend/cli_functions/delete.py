@@ -29,4 +29,5 @@ class Delete(Function):
                     self.task(args[1:])
                 case 'category':
                     self.category(args[1:])
-
+        else:
+            print(self.get_description(None))

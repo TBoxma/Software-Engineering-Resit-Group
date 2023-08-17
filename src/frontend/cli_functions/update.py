@@ -18,4 +18,13 @@ class Update(Function):
     def category(*args:str):
         return
     
+
     def command(self, *args:str) -> None:
+        if len(args>1):
+            match args[0]:
+                case 'task':
+                    self.task(args[1:])
+                case 'category':
+                    self.category(args[1:])
+        else:
+            print(self.get_description())
