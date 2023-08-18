@@ -1,19 +1,21 @@
+import click
 from src.backend.api.category_api import CategoryApi
 from src.backend.api.task_api import TaskApi
-from function import Function
+from src.frontend.cli_functions.function import Function
 
 
 class New(Function):
-    def get_description(*args:str):
+    def get_description(self, args:[str] = []) -> [str,str]:
         if len(args)==0:
             return ['new', 'new task|category']
-        match args[1]:
+        match args[0]:
             case 'task':
                 return ['new task (name)', "create a new task"]
             case 'category':
                 return ['new category (name)', "create a new category"]
 
-    def task(self, *args:str):
+    def task(self, args:[str] = []) -> None:
+        print(args)
         given_attributes= {}
         given_attributes["name"] = "new task"
         given_attributes["categories"] = ""
@@ -25,10 +27,9 @@ class New(Function):
         needs["categories"] = True
 
         # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
-        print(len(args[0]))
-        if(len(args[0])>0):
-            for unparsed_attribute in args[0]:
-                parsed_attribute = unparsed_attribute.split(':')
+        if(len(args)>0):
+            for unparsed_attribute in args[0:]:
+                parsed_attribute = str(unparsed_attribute).split(':')
                 if (len(parsed_attribute) == 2):
                     if(needs.get(parsed_attribute[0])):
                         try:
@@ -52,7 +53,8 @@ class New(Function):
             categories = []
         TaskApi.add(given_attributes["name"], categories)
 
-    def category(self, *args:str):
+    def category(self, args:[str] = []) -> None:
+        print(args)
         given_attributes= {}
         given_attributes["name"] = "new category"
 
@@ -63,10 +65,9 @@ class New(Function):
         needs["categories"] = False
 
         # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
-        print(len(args[0]))
-        if(len(args[0])>0):
+        if(len(args)>0):
             for unparsed_attribute in args[0]:
-                parsed_attribute = unparsed_attribute.split(':')
+                parsed_attribute = str(unparsed_attribute).split(':')
                 if (len(parsed_attribute) == 2):
                     if(needs.get(parsed_attribute[0])):
                         try:
@@ -88,8 +89,8 @@ class New(Function):
         CategoryApi.add(given_attributes["name"])
 
 
-    def execute(self, *args:str) -> None:
-        if len(args>1):
+    def execute(self, args:[str] = []) -> None:
+        if len(args)>0:
             match args[0]:
                 case 'task':
                     self.task(args[1:])
@@ -97,3 +98,4 @@ class New(Function):
                     self.category(args[1:])
         else:
             print(self.get_description())
+

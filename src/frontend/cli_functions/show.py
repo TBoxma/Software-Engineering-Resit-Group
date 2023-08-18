@@ -1,4 +1,4 @@
-from function import Function
+from src.frontend.cli_functions.function import Function
 from src.backend.api import task_api
 from src.backend.api.category_api import CategoryApi
 from src.backend.model.category import Category
@@ -6,7 +6,7 @@ from src.backend.model.task import Task
 
 class Show(Function):
 
-    def get_description(*args:str):
+    def get_description(self, args:[str] = []) -> [str,str]:
         if len(args)==0:
             return ['show', 'show task|category']
         match args[1]:
@@ -16,7 +16,7 @@ class Show(Function):
                 return ['show category (name(optional))', "show all categories or a sprecific one"]
               
     #tbd
-    def task(*args:str):
+    def task(self, args:[str] = []) -> None:
         if(len(args) == 0):
             tasks: list[Task] = task_api.list_all()
             for task in tasks:
@@ -31,7 +31,7 @@ class Show(Function):
             print("Task categories: "+", ".join(categories))
             print()
 
-    def category(*args:str):
+    def category(self, args:[str] = []) -> None:
         if(len(args) == 2):
             categories: list[Category] = CategoryApi.list_all()
             for category in categories:
@@ -47,8 +47,8 @@ class Show(Function):
             print()
     
 
-    def execute(self, *args:str) -> None:
-        if len(args>1):
+    def execute(self, args:[str] = []) -> None:
+        if len(args)>0:
             match args[0]:
                 case 'task':
                     self.task(args[1:])

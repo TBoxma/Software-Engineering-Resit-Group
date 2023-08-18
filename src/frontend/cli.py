@@ -5,10 +5,12 @@ from src.backend.model.task import Task
 from ..backend.api.task_api import TaskApi
 from ..backend.api.category_api import CategoryApi
 
-from cli_functions.delete import *
-from cli_functions.new import *
-from cli_functions.show import *
-from cli_functions.update import *
+from src.frontend.cli_functions.delete import *
+from src.frontend.cli_functions.new import *
+from src.frontend.cli_functions.show import *
+from src.frontend.cli_functions.update import *
+from src.frontend.cli_functions.function import *
+from src.frontend.cli_functions.help import *
 
 
 class CLI:
@@ -37,62 +39,17 @@ class CLI:
             command_args = command_str.split(' ')
             match command_args[0]:
                 case "help":
-                    print(self.helper_string)
+                    Help().execute(command_args[1:])
+                case "new":
+                    New().execute(command_args[1:])
+                case "update":
+                    Update().execute(command_args[1:])
+                case "show":
+                    Show().execute(command_args[1:])
+                case "del":
+                    Delete().execute(command_args[1:])
                 case "exit":
                     break
-                case "new":
-                    # attributes:
-                    if(len(command_args) > 1):
-                        match command_args[1]:
-                            case "task":
-                                self.handle_new_task(command_args[2:])
-                            case "category":
-                                self.handle_new_category(command_args[2:])
-                    else:
-                        print("type 'new task' or 'new category'")
-                case "update":
-                    match command_args[1]:
-                        case "task":
-                            print("update a task, tbd")
-                        case "category":
-                            print("update a category, tbd")
-                case "show":
-                    match command_args[1]:
-                        case "task":
-                            if(len(command_args) == 2):
-                                tasks: list[Task] = TaskApi.list_all()
-                                for task in tasks:
-                                    categories = [category.name for category in task.categories]
-                                    print("Task name: "+task.name)
-                                    print("Task categories: "+", ".join(categories))
-                                    print()
-                            else:
-                                task: Task = TaskApi.get_by_name(command_args[2])
-                                categories = [category.name for category in task.categories]
-                                print("Task name: "+task.name)
-                                print("Task categories: "+", ".join(categories))
-                                print()
-                        case "category":
-                            if(len(command_args) == 2):
-                                categories: list[Category] = CategoryApi.list_all()
-                                for category in categories:
-                                    tasks = [task.name for task in category.tasks]
-                                    print("Category name: "+category.name)
-                                    print("Category tasks: "+", ".join(tasks))
-                                    print()
-                            else:
-                                category: Category = CategoryApi.get_by_name(command_args[2])
-                                tasks = [task.name for task in category.tasks]
-                                print("Category name: "+category.name)
-                                print("Category tasks: "+", ".join(tasks))
-                                print()
-                case "del":
-                    if(len(command_args) > 1):
-                        match command_args[1]:
-                            case "task":
-                                TaskApi.delete_by_name(' '.join(command_args[2:]))
-                            case "category":
-                                CategoryApi.delete_by_name(' '.join(command_args[2:]))
                 case _:
                     print("Type 'help' for a list of commands")
 

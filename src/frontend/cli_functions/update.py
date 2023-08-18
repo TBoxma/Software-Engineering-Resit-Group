@@ -1,8 +1,8 @@
-from function import Function
+from src.frontend.cli_functions.function import Function
 
 class Update(Function):
 
-    def get_description(*args:str):
+    def get_description(self, args:[str] = []) -> [str,str]:
         if len(args)==0:
             return ['update', 'update task|category']
         match args[1]:
@@ -18,9 +18,8 @@ class Update(Function):
     def category(*args:str):
         return
     
-
-    def execute(self, *args:str) -> None:
-        if len(args>1):
+    def execute(self, args:[str] = []) -> None:
+        if len(args)>0:
             match args[0]:
                 case 'task':
                     self.task(args[1:])

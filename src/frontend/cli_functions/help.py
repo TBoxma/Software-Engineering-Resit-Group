@@ -1,4 +1,4 @@
-from function import Function
+from src.frontend.cli_functions.function import Function
 
 class Help(Function):
     helper_string = '\n'.join([
@@ -16,10 +16,9 @@ class Help(Function):
 
     exit_desc = ['exit', 'escape the program']
 
-    def get_description():
+    def get_description(self, args:[str] = []) -> [str,str]:
         return ['help', "get all possible commands as a list.  e.g. 'help new'"]
 #help, new, new, update, del, exit
 
-    def execute(self, *args:str) -> None:
-        if len(args)==0:
-            
+    def execute(self, args:[str] = []) -> None:
+        print("getting help, tbd")
