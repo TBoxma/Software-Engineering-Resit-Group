@@ -12,10 +12,10 @@ class Update(Function):
                 return ['update category (name(optional))', "update a category"]
               
     #tbd
-    def task(*args:str):
+    def task(self, args:[str] = []) -> None:
         return
 
-    def category(*args:str):
+    def category(self, args:[str] = []) -> None:
         return
     
     def execute(self, args:[str] = []) -> None:
