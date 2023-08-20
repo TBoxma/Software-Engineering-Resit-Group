@@ -50,6 +50,8 @@ class New(Function):
                             needs[parsed_attribute[0]] = False
                         except KeyError:
                             continue
+                    else:
+                        given_attributes["name"] = parsed_attribute[0]
                         
         #get the needs that haven't been set yet
         needs_to_do = {key : val for key, val in needs.items() if val == True}
@@ -61,7 +63,11 @@ class New(Function):
         categories = given_attributes["categories"].split(',')
         if len(categories) == 1 and categories[0]=="":
             categories = []
-        TaskApi.add(given_attributes["name"], categories)
+        try:
+            TaskApi.add(given_attributes["name"], categories)
+        except:
+            print("The task wasn't created, something went wrong")
+            
 
     def category(self, args:[str] = []) -> None:
         print(args)
@@ -96,7 +102,10 @@ class New(Function):
                 given_attributes[need] = click.prompt(need, type=str, default="")
         
         print("Creating new category with attributes", str(given_attributes))
-        CategoryApi.add(given_attributes["name"])
+        try:
+            CategoryApi.add(given_attributes["name"])
+        except:
+            print("The category wasn't created, something went wrong")
 
 
     def execute(self, args:[str] = []) -> None:
@@ -107,5 +116,5 @@ class New(Function):
                 case 'category':
                     self.category(args[1:])
         else:
-            print(self.get_description())
+            print(self.get_description_generic())
 

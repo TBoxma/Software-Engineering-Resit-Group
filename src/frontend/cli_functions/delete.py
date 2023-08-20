@@ -24,10 +24,16 @@ class Delete(Function):
     
 
     def task(self, args:[str] = []) -> None:
-        TaskApi.delete_by_name(' '.join(args))
+        try:
+            TaskApi.delete_by_name(' '.join(args))
+        except:
+            print("The task wasn't deleted, something went wrong")
 
     def category(self, args:[str] = []) -> None:
-        CategoryApi.delete_by_name(' '.join(args))
+        try:
+            CategoryApi.delete_by_name(' '.join(args))
+        except:
+            print("The category wasn't deleted, something went wrong")
         
     def execute(self, args:[str] = []) -> None:
         if len(args)>0:
@@ -37,4 +43,4 @@ class Delete(Function):
                 case 'category':
                     self.category(args[1:])
         else:
-            print(self.get_description())
+            print(self.get_description_generic())

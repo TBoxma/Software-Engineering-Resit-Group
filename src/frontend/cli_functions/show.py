@@ -64,4 +64,4 @@ class Show(Function):
                 case 'category':
                     self.category(args[1:])
         else:
-            print(self.get_description())
+            print(self.get_description_generic())
