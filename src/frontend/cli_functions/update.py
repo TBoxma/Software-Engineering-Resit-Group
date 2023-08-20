@@ -2,14 +2,23 @@ from src.frontend.cli_functions.function import Function
 
 class Update(Function):
 
-    def get_description(self, args:[str] = []) -> [str,str]:
+    main_description = ["update task|category", "update a task or category"]
+    task_description = ['update task (name)', "update a task"]
+    category_description = ['update category (name)', "update a category"]
+
+    def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
-            return ['update', 'update task|category']
-        match args[1]:
+            return [self.task_description, self.category_description]
+        match args[0]:
             case 'task':
-                return ['update task (name(optional))', "update a task"]
+                return [self.task_description]
             case 'category':
-                return ['update category (name(optional))', "update a category"]
+                return [self.category_description]
+            case _:
+                return [[args[0], "does not exist or cannot be called in this context"]]
+                        
+    def get_description_generic(self) -> [str,str]:
+        return self.main_description
               
     #tbd
     def task(self, args:[str] = []) -> None:
