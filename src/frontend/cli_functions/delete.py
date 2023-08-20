@@ -4,24 +4,41 @@ from src.backend.api.task_api import TaskApi
 
 
 class Delete(Function):
-    helperstring = "del task|update"
+    main_description = ["del task|category", "delete a task or category"]
+    task_description = ['del task (name)', "delete a task"]
+    category_description = ['del category (name)', "delete a category"]
 
-    
-    def get_description(self, args:[str] = []) -> [str,str]:
+    #Get the description as a list of string tuples [[command, desc]]
+    def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
-            return ['del', 'new task|category']
-        match args[1]:
+            return [self.task_description, self.category_description]
+        match args[0]:
             case 'task':
-                return ['del task (name)', "delete a task"]
+                return [self.task_description]
             case 'category':
-                return ['del category (name)', "delete a category"]
+                return [self.category_description]
+            case _:
+                return [[args[0], "does not exist or cannot be called in this context"]]
+                  
+    #Get the description as a single tuple [command, desc]
+    def get_description_generic(self) -> [str,str]:
+        return self.main_description
+    
 
     def task(self, args:[str] = []) -> None:
-        TaskApi.delete_by_name(' '.join(args))
+        try:
+            TaskApi.delete_by_name(' '.join(args))
+        except:
+            print("The task wasn't deleted, something went wrong")
 
     def category(self, args:[str] = []) -> None:
-        CategoryApi.delete_by_name(' '.join(args))
+        try:
+            CategoryApi.delete_by_name(' '.join(args))
+        except:
+            print("The category wasn't deleted, something went wrong")
         
+    #Execute the function, you pass the arguments given by the user as a list.
+    #Other functions in this class handle the rest of the arguments.
     def execute(self, args:[str] = []) -> None:
         if len(args)>0:
             match args[0]:
@@ -30,4 +47,4 @@ class Delete(Function):
                 case 'category':
                     self.category(args[1:])
         else:
-            print(self.get_description())
+            print(self.get_description_generic())

@@ -5,14 +5,26 @@ from src.frontend.cli_functions.function import Function
 
 
 class New(Function):
-    def get_description(self, args:[str] = []) -> [str,str]:
+    main_description = ["new task|category", "create a new task or category"]
+    task_description = ['new task (name)', "create a new task"]
+    category_description = ['new category (name)', "create a new category"]
+
+    #Get the description as a list of string tuples [[command, desc]]
+    def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
-            return ['new', 'new task|category']
+            return [self.task_description, self.category_description]
         match args[0]:
             case 'task':
-                return ['new task (name)', "create a new task"]
+                return [self.task_description]
             case 'category':
-                return ['new category (name)', "create a new category"]
+                return [self.category_description]
+            case _:
+                return [[args[0], "does not exist or cannot be called in this context"]]
+                        
+    #Get the description as a single tuple [command, desc]
+    def get_description_generic(self) -> [str,str]:
+        return self.main_description
+    
 
     def task(self, args:[str] = []) -> None:
         print(args)
@@ -40,6 +52,8 @@ class New(Function):
                             needs[parsed_attribute[0]] = False
                         except KeyError:
                             continue
+                    else:
+                        given_attributes["name"] = parsed_attribute[0]
                         
         #get the needs that haven't been set yet
         needs_to_do = {key : val for key, val in needs.items() if val == True}
@@ -51,7 +65,11 @@ class New(Function):
         categories = given_attributes["categories"].split(',')
         if len(categories) == 1 and categories[0]=="":
             categories = []
-        TaskApi.add(given_attributes["name"], categories)
+        try:
+            TaskApi.add(given_attributes["name"], categories)
+        except:
+            print("The task wasn't created, something went wrong")
+            
 
     def category(self, args:[str] = []) -> None:
         print(args)
@@ -86,9 +104,14 @@ class New(Function):
                 given_attributes[need] = click.prompt(need, type=str, default="")
         
         print("Creating new category with attributes", str(given_attributes))
-        CategoryApi.add(given_attributes["name"])
+        try:
+            CategoryApi.add(given_attributes["name"])
+        except:
+            print("The category wasn't created, something went wrong")
 
 
+    #Execute the function, you pass the arguments given by the user as a list.
+    #Other functions in this class handle the rest of the arguments.
     def execute(self, args:[str] = []) -> None:
         if len(args)>0:
             match args[0]:
@@ -97,5 +120,5 @@ class New(Function):
                 case 'category':
                     self.category(args[1:])
         else:
-            print(self.get_description())
+            print(self.get_description_generic())
 
