@@ -26,9 +26,8 @@ class TaskApi(BaseModelApi):
         """
         Add a new task with the given name and associated with a specific category.
 
-        Args:
-            name (str): The name of the task to be added.
-            category_name (str): The name of the category to associate the task with.
+        :param name: The name of the task to be added.
+        :param category_name: The name of the category to associate the task with.
         """
         stm = select(Category).where(Category.name.in_(category_names))
         categories: list[Category] = session.scalars(stm).all()
@@ -48,9 +47,8 @@ class TaskApi(BaseModelApi):
         This function creates a TaskTime entry with the specified duration and associates it
         with the given task. The TaskTime entry is added to the database along with the task.
 
-        Args:
-            duration (int): The duration of the task in minutes.
-            task_id (int): The ID of the task to which the duration will be added.
+        :param duration: The duration of the task in minutes.
+        :param task_id: The ID of the task to which the duration will be added.
         """
 
         task: Task = cls()._get_model_by_name(task_name, session)
@@ -71,13 +69,10 @@ class TaskApi(BaseModelApi):
         This function calculates the duration between the provided start and end times,
         then adds the calculated duration as a TaskTime entry associated with the given task.
 
-        Args:
-            start (str): The start time in "hh:mm" format.
-            end (str): The end time in "hh:mm" format.
-            task_id (int): The ID of the task to which the duration will be added.
-
-        Raises:
-            ValueError: If either start or end time is in an invalid format.
+        :param start: The start time in "hh:mm" format.
+        :param end: The end time in "hh:mm" format.
+        :param task_id: The ID of the task to which the duration will be added.
+        :raises ValueError: If either start or end time is in an invalid format.
 
         Note:
             The start and end times should be in the "hh:mm" format. This function calculates
@@ -98,6 +93,13 @@ class TaskApi(BaseModelApi):
     @classmethod
     @query
     def get_task_time(cls, day: date, task_name: str, session: Session) -> TaskTime:
+        """
+        Returns task time entry by specific date and task name
+
+        :param day: date of interest
+        :param task_name: name of the task for which to return time entry
+        :returns: TaskTime object with the duration of specified task at specifed day
+        """
         task: Task = cls()._get_model_by_name(task_name, session)
 
         task_time: TaskTime = session.scalar(select(TaskTime)
@@ -107,6 +109,12 @@ class TaskApi(BaseModelApi):
     @classmethod
     @query
     def list_all_task_times(cls, task_name: str, session: Session) -> list[TaskTime]:
+        """
+        Returns all task time entries for specific task
+
+        :param task_name: name of the task for which to display all time entries
+        :returns: a list of TaskTime objects
+        """
         task: Task = cls()._get_model_by_name(task_name, session)
 
         task_times: list[TaskTime] = session.scalars(select(TaskTime)
@@ -119,10 +127,9 @@ class TaskApi(BaseModelApi):
         """
         Update the duration of a task for a specific day.
 
-        Args:
-            day (date): The date for which the task duration should be updated.
-            task_id (int): The ID of the task for which the duration should be updated.
-            duration (int): The amount by which to increase the task's duration.
+        :param day: The date for which the task duration should be updated.
+        :param task_id: The ID of the task for which the duration should be updated.
+        :param duration: The amount by which to increase the task's duration.
         """
         task: Task = cls()._get_model_by_name(task_name, session)
         task_time: TaskTime = session.get(TaskTime, (day, task.id))
@@ -131,7 +138,10 @@ class TaskApi(BaseModelApi):
         session.commit()
 
     @staticmethod
-    def _calculate_duration(start_time: str, end_time: str):
+    def _calculate_duration(start_time: str, end_time: str) -> int:
+        """
+        Private function which calculates difference between 2 points in time
+        """
         time_format = "%H:%M"
 
         start_datetime = datetime.strptime(start_time, time_format)

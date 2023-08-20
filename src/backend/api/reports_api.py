@@ -25,7 +25,7 @@ class ReportsApi:
 
         :param start: The start date of the time period.
         :param end: The end date of the time period.
-        :return: The total time spent in minutes.
+        :returns: The total time spent in minutes.
         """
         stm = select(func.sum(TaskTime.duration)).where(
             and_(
@@ -45,7 +45,7 @@ class ReportsApi:
         :param start: The start date of the time period.
         :param end: The end date of the time period.
         :param category_names: List of category names to consider.
-        :return: A dictionary containing categories as keys and their total times as values.
+        :returns: A dictionary containing categories as keys and their total times as values.
         """
         stm = select(Category.name, func.sum(TaskTime.duration))\
             .join(Category.tasks)\
@@ -77,7 +77,7 @@ class ReportsApi:
         :param start: The start date of the time period.
         :param end: The end date of the time period.
         :param task_names: List of task names to consider.
-        :return: A dictionary containing task names as keys and their total times as values.
+        :returns: A dictionary containing task names as keys and their total times as values.
         """
         stm = select(Task.name, func.sum(TaskTime.duration))\
             .join(Task.durations)\
@@ -106,7 +106,7 @@ class ReportsApi:
         :param start: The start date of the time period.
         :param end: The end date of the time period.
         :param category_names: List of category names to consider.
-        :return: A dictionary containing categories as keys and their percentage of total time as values.
+        :returns: A dictionary containing categories as keys and their percentage of total time as values.
         """
         total_time = ReportsApi.report_total_time(start, end)
         total_by_categories = ReportsApi.report_total_time_categories(start, end, category_names)
@@ -126,7 +126,7 @@ class ReportsApi:
         :param start: The start date of the time period.
         :param end: The end date of the time period.
         :param task_names: List of task names to consider.
-        :return: A dictionary containing task names as keys and their percentage of total time as values.
+        :returns: A dictionary containing task names as keys and their percentage of total time as values.
         """
         total_time = ReportsApi.report_total_time(start, end)
         total_by_tasks = ReportsApi.report_total_time_tasks(start, end, task_names)

@@ -27,7 +27,7 @@ class BaseModelApi:
         Adds a new instance of the model to the database.
 
         :param name: The name attribute of a model.
-        :return: id of created object
+        :returns: id of created object
         """
         model: Category | Task = cls().model(name=name)
 
@@ -78,7 +78,7 @@ class BaseModelApi:
         Retrieves a model instance by its name.
 
         :param name: The name of the model.
-        :return: An instance of Category or Task.
+        :returns: An instance of Category or Task.
         :raises: CategoryNotFoundException: If the category with the given name is not found.
         :raises: TaskNotFoundException: If the task with the given name is not found.
         """
@@ -89,7 +89,7 @@ class BaseModelApi:
         Retrieves a model instance by its name.
 
         :param name: The name of the model.
-        :return: An instance of Category or Task.
+        :returns: An instance of Category or Task.
         """
         if self.model is Category:
             category: Category = session.scalar(select(Category).where(Category.name == name))
