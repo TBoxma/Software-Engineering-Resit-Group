@@ -23,7 +23,7 @@ class Help(Function):
 
     exit_desc = ['exit', 'escape the program']
 
-    main_description = ["help", "get a list of commands, ask for a specific command with 'help [command]"]
+    main_description = ["help", "get a list of commands, ask for a specific command with 'help [command]'"]
     help_description = ["help", "get a list of commands"]
     help_cmd_description = ["help [command]", "get help with a specific command"]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
