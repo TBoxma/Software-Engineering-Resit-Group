@@ -26,6 +26,7 @@ class Help(Function):
     main_description = ["help", "get a list of commands, ask for a specific command with 'help [command]'"]
     help_description = ["help", "get a list of commands"]
     help_cmd_description = ["help [command]", "get help with a specific command"]
+    #Get the description as a list of string tuples [[command, desc]]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
             return [self.help_description, self.help_cmd_description]
@@ -35,12 +36,15 @@ class Help(Function):
             case 'category':
                 return [self.category_description]
             
+    #Get the description as a single tuple [command, desc]
     def get_description_generic(self) -> [str,str]:
         return self.main_description
 
 
 #help, new, new, update, del, exit
 
+    #Execute the function, you pass the arguments given by the user as a list.
+    #Other functions in this class handle the rest of the arguments.
     def execute(self, args:[str] = []) -> None:
         helper_list = []
         if(len(args) == 0):
