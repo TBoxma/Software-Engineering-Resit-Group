@@ -38,7 +38,7 @@ class ReportsApi:
 
     @staticmethod
     @query
-    def report_total_time_categories(start: date, end: date, category_names: list[str], session: Session) -> dict[Category.name, Decimal]:
+    def report_total_time_categories(start: date, end: date, category_names: list[str], session: Session) -> dict[str, Decimal]:
         """
         Calculates the total time spent on tasks belonging to specified categories within a specified time period.
 
@@ -70,7 +70,7 @@ class ReportsApi:
 
     @staticmethod
     @query
-    def report_total_time_tasks(start: date, end: date, task_names: list[str], session: Session) -> dict[Task.name, Decimal]:
+    def report_total_time_tasks(start: date, end: date, task_names: list[str], session: Session) -> dict[str, Decimal]:
         """
         Calculates the total time spent on specified tasks within a specified time period.
 
@@ -99,7 +99,7 @@ class ReportsApi:
         return result
 
     @staticmethod
-    def report_percentage_categories(start: date, end: date, category_names: list[str]) -> dict[Category.name, Decimal]:
+    def report_percentage_categories(start: date, end: date, category_names: list[str]) -> dict[str, Decimal]:
         """
         Calculates the percentage of total time spent on each category within a specified time period.
 
@@ -119,7 +119,7 @@ class ReportsApi:
         return result
 
     @staticmethod
-    def report_percentage_tasks(start: date, end: date, task_names: list[str]) -> dict[Task.name, Decimal]:
+    def report_percentage_tasks(start: date, end: date, task_names: list[str]) -> dict[str, Decimal]:
         """
         Calculates the percentage of total time spent on each task within a specified time period.
 
