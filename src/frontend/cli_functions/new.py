@@ -5,14 +5,24 @@ from src.frontend.cli_functions.function import Function
 
 
 class New(Function):
-    def get_description(self, args:[str] = []) -> [str,str]:
+    main_description = ["new task|category", "create a new task or category"]
+    task_description = ['new task (name)', "create a new task"]
+    category_description = ['new category (name)', "create a new category"]
+
+    def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
-            return ['new', 'new task|category']
+            return [self.task_description, self.category_description]
         match args[0]:
             case 'task':
-                return ['new task (name)', "create a new task"]
+                return [self.task_description]
             case 'category':
-                return ['new category (name)', "create a new category"]
+                return [self.category_description]
+            case _:
+                return [[args[0], "does not exist or cannot be called in this context"]]
+                        
+    def get_description_generic(self) -> [str,str]:
+        return self.main_description
+    
 
     def task(self, args:[str] = []) -> None:
         print(args)

@@ -6,14 +6,23 @@ from src.backend.model.task import Task
 
 class Show(Function):
 
-    def get_description(self, args:[str] = []) -> [str,str]:
+    main_description = ["show task|category", "show a task or category"]
+    task_description = ['show task (name)', "show a task"]
+    category_description = ['show category (name)', "show a category"]
+
+    def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
-            return ['show', 'show task|category']
-        match args[1]:
+            return [self.task_description, self.category_description]
+        match args[0]:
             case 'task':
-                return ['show task (name(optional))', "show all tasks or a sprecific one"]
+                return [self.task_description]
             case 'category':
-                return ['show category (name(optional))', "show all categories or a sprecific one"]
+                return [self.category_description]
+            case _:
+                return [[args[0], "does not exist or cannot be called in this context"]]
+
+    def get_description_generic(self) -> [str,str]:
+        return self.main_description
               
     #tbd
     def task(self, args:[str] = []) -> None:
