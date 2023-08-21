@@ -22,19 +22,17 @@ class BaseModelApi:
     
     @classmethod
     @query
-    def add(cls, name: str, session: Session) -> int:
+    def add(cls, name: str, session: Session):
         """
         Adds a new instance of the model to the database.
 
         :param name: The name attribute of a model.
-        :return: id of created object
+        :returns: id of created object
         """
         model: Category | Task = cls().model(name=name)
 
         session.add(model)
         session.commit()
-
-        return model.id
 
     @classmethod
     @query
@@ -43,7 +41,7 @@ class BaseModelApi:
 
     @classmethod
     @query
-    def update_by_name(cls, name: str, session: Session):
+    def update_by_name(cls, name: str, new_name: str, session: Session):
         """
         Updates the name of an existing model instance based on its name.
 
@@ -51,7 +49,7 @@ class BaseModelApi:
         """
         model: Category | Task = cls()._get_model_by_name(name, session)
 
-        model.name = name
+        model.name = new_name
         session.commit()
     
     @classmethod
@@ -68,6 +66,7 @@ class BaseModelApi:
             model.tasks.clear()
         else:
             model.categories.clear()
+            model.durations.clear()
         
         session.delete(model)
         session.commit() 
@@ -79,7 +78,7 @@ class BaseModelApi:
         Retrieves a model instance by its name.
 
         :param name: The name of the model.
-        :return: An instance of Category or Task.
+        :returns: An instance of Category or Task.
         :raises: CategoryNotFoundException: If the category with the given name is not found.
         :raises: TaskNotFoundException: If the task with the given name is not found.
         """
@@ -90,11 +89,10 @@ class BaseModelApi:
         Retrieves a model instance by its name.
 
         :param name: The name of the model.
-        :return: An instance of Category or Task.
+        :returns: An instance of Category or Task.
         """
         if self.model is Category:
             category: Category = session.scalar(select(Category).where(Category.name == name))
-
             if not category:
                 raise CategoryNotFoundException(f"Category with name '{name}' was not found")
             

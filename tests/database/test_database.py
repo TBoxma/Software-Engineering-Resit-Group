@@ -6,7 +6,6 @@ import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
 def test_should_connect_to_mysql():
-
     engine = MySQL.get_engine()
     connection = engine.connect()
     connection.close()

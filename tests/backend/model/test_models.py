@@ -16,7 +16,7 @@ def sample_category(name: str = None) -> Category:
 def sample_task(name: str = None) -> Task:
     return Task(name="Test task") if not name else Task(name=name)
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def session():
     engine = MySQL.get_engine()
     session = Session(bind=engine)
