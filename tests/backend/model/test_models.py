@@ -3,7 +3,7 @@ import pytest
 from datetime import date
 from sqlalchemy.exc import IntegrityError
 
-from database.connector import MySQL
+from database.connector import SQLite
 from sqlalchemy.orm.session import Session
 from src.backend.model.category import Category
 from src.backend.model.task import Task
@@ -18,7 +18,7 @@ def sample_task(name: str = None) -> Task:
 
 @pytest.fixture
 def session():
-    engine = MySQL.get_engine()
+    engine = SQLite.get_engine()
     session = Session(bind=engine)
     session.begin_nested()
 
