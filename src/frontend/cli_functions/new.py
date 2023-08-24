@@ -72,42 +72,14 @@ class New(Function):
             
 
     def category(self, args:[str] = []) -> None:
-        print(args)
-        given_attributes= {}
-        given_attributes["name"] = "new category"
 
-        # List of attributes that the user needs to give:
-        needs={}
-        needs["name"] = True
-        needs["id"] = False
-        needs["categories"] = False
-
-        # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
-        if(len(args)>0):
-            for unparsed_attribute in args[0]:
-                parsed_attribute = str(unparsed_attribute).split(':')
-                if (len(parsed_attribute) == 2):
-                    if(needs.get(parsed_attribute[0])):
-                        try:
-                            given_attributes[parsed_attribute[0]] = parsed_attribute[1]
-                        except KeyError:
-                            continue
-                        try:
-                            needs[parsed_attribute[0]] = False
-                        except KeyError:
-                            continue
-                        
-        #get the needs that haven't been set yet
-        needs_to_do = {key : val for key, val in needs.items() if val == True}
-        if(len(needs_to_do)>0):
-            for need in needs_to_do:
-                given_attributes[need] = click.prompt(need, type=str, default="")
-        
-        print("Creating new category with attributes", str(given_attributes))
-        try:
-            CategoryApi.add(given_attributes["name"])
-        except:
-            print("The category wasn't created, something went wrong")
+        for name in args:
+            if click.confirm("Do you want to create category '"+str(name)+"'?", default=True):
+                try:
+                    CategoryApi.add(str(name))
+                    print("category '"+str(name)+"' was created.")
+                except:
+                    print("The category wasn't created, something went wrong")
 
 
     #Execute the function, you pass the arguments given by the user as a list.
