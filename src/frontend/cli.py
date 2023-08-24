@@ -1,9 +1,4 @@
 import click
-from src.backend.model.category import Category
-
-from src.backend.model.task import Task
-from ..backend.api.task_api import TaskApi
-from ..backend.api.category_api import CategoryApi
 
 from src.frontend.cli_functions.delete import *
 from src.frontend.cli_functions.new import *
