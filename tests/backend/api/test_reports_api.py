@@ -134,6 +134,6 @@ def test_should_report_percentage_by_tasks():
 
     time_spent = ReportsApi.report_percentage_tasks(date(2023, 8, 12), date(2023, 8, 14), [tn1, tn2, tn3])
 
-    assert time_spent[tn1] == Decimal(((50 + 15) / 214) * 100).quantize(Decimal('0.0'))
-    assert time_spent[tn2] == Decimal((102 / 214) * 100).quantize(Decimal('0.0'))
-    assert time_spent[tn3] == Decimal((47 / 214) * 100).quantize(Decimal('0.0'))
+    assert time_spent[tn1] == round(((50 + 15) / 214) * 100, 2)
+    assert time_spent[tn2] == round((102 / 214) * 100, 2)
+    assert time_spent[tn3] == round((47 / 214) * 100, 2)
