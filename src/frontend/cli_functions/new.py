@@ -27,6 +27,30 @@ class New(Function):
     
 
     def task(self, args:[str] = []) -> None:
+        #Each arg represents a new task to create
+        for task_name in args:
+            if click.confirm(("Do you want to create a task named '"+task_name+"'?"), default=True):
+                categories=[]
+                while True:
+                    category_input = click.prompt("add or remove a category")
+                    if (category_input[0] == '-' and len(category_input)>2):
+                        if(category_input[1:] in categories):
+                            categories.remove(category_input[1:])
+                    else:
+                        if(True):  #Will be CategoryApi.isValid(category_input)
+                            categories.append(category_input)
+                        else:
+                            print("Sorry, that's not a valid category")
+                        
+                        if click.confirm((task_name+" will have categories "+categories+". Is that correct?")):
+                            try:
+                                TaskApi.add(task_name, categories)
+                            except:
+                                print("The task wasn't created, something went wrong")
+                    
+
+
+
         print(args)
         given_attributes= {}
         given_attributes["name"] = "new task"
