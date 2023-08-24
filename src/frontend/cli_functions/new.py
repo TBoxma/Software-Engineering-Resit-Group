@@ -37,7 +37,7 @@ class New(Function):
                         if(category_input[1:] in categories):
                             categories.remove(category_input[1:])
                     else:
-                        if(True):  #Will be CategoryApi.isValid(category_input)
+                        if(True):  #Will be: CategoryApi.isValid(category_input)
                             categories.append(category_input)
                         else:
                             print("Sorry, that's not a valid category")
