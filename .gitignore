@@ -6,4 +6,5 @@ config/mysql.py
 dist
 build
 *.spec
-database/ttt.db
+*.db
+data/

@@ -8,6 +8,6 @@ class SQLite:
     @classmethod
     def get_engine(self):
         if self._engine is None:
-            self._engine = create_engine("sqlite:///database/ttt.db")
+            self._engine = create_engine("sqlite:///data/ttt.db")
 
         return self._engine
