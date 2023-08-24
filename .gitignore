@@ -1,6 +1,9 @@
 # Lock file for poetry
 poetry.lock
 
+# Mac files
+.DS_Store
+
 # SQLite related files
 *.db
 data/
