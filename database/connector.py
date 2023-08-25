@@ -1,5 +1,4 @@
 from sqlalchemy import create_engine, URL
-from config.mysql import *
 
 class SQLite:
     '''Holds a single instance of `Engine` configured to use `SQLite` dialect.'''
