@@ -1,5 +1,4 @@
 from sqlalchemy import create_engine, URL
-from config.mysql import *
 
 # TODO: add configuration
 

@@ -12,8 +12,6 @@ from src.backend.model.category import Category
 from src.backend.model.task import Task
 from src.backend.model.task_category import TaskCategory
 
-from config.mysql import *
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
