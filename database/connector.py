@@ -1,21 +1,12 @@
 from sqlalchemy import create_engine, URL
 
-# TODO: add configuration
-
-class MySQL:
-    '''Holds a single instance of `Engine` configured to use `MySQL` dialect.'''
+class SQLite:
+    '''Holds a single instance of `Engine` configured to use `SQLite` dialect.'''
     _engine = None
 
     @classmethod
     def get_engine(self):
         if self._engine is None:
-            db_url = URL.create(
-                "mysql+pymysql",
-                username=MYSQL_USER,
-                password=MYSQL_PASSWORD,
-                host=MYSQL_DB_HOST,
-                database=MYSQL_DB_NAME
-            )
-            self._engine = create_engine(db_url)
+            self._engine = create_engine("sqlite:///data/ttt.db")
 
         return self._engine

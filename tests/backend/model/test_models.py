@@ -3,7 +3,7 @@ import pytest
 from datetime import date
 from sqlalchemy.exc import IntegrityError
 
-from database.connector import MySQL
+from database.connector import SQLite
 from sqlalchemy.orm.session import Session
 from src.backend.model.category import Category
 from src.backend.model.task import Task
@@ -18,7 +18,7 @@ def sample_task(name: str = None) -> Task:
 
 @pytest.fixture
 def session():
-    engine = MySQL.get_engine()
+    engine = SQLite.get_engine()
     session = Session(bind=engine)
     session.begin_nested()
 
@@ -116,7 +116,7 @@ def test_should_correctly_add_durations_to_task(session: Session):
     assert task_id_equals and date_is_today
 
 def test_should_fail_to_add_duration_same_day_same_task(session: Session):
-    with pytest.raises(IntegrityError, match='Duplicate entry'):
+    with pytest.raises(IntegrityError, match='UNIQUE constraint failed'):
         task = sample_task()
         duration1 = TaskTime(task_day=date.today(), task_id=task.id, duration=60)
         duration2 = TaskTime(task_day=date.today(), task_id=task.id, duration=10)
