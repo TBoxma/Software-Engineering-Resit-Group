@@ -150,3 +150,10 @@ class TaskApi(BaseModelApi):
         time_difference = (end_datetime - start_datetime).total_seconds() / 60
 
         return int(time_difference)
+    
+    @classmethod
+    def exists(cls, name: str) -> bool:
+        all_tasks = cls().list_all()
+        names = [c.name for c in all_tasks]
+
+        return name in names
