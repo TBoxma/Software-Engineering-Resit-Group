@@ -7,7 +7,7 @@ from src.frontend.cli_functions.function import Function
 class New(Function):
     main_description = ["new task|category", "create a new task or category"]
     task_description = ['new task (name)', "create a new task"]
-    category_description = ['new category (name)', "create a new category"]
+    category_description = ['new category [name]', "create one or more new categories."]
 
     #Get the description as a list of string tuples [[command, desc]]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
