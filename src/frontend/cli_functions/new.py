@@ -37,7 +37,7 @@ class New(Function):
                         if(category_input[1:] in categories):
                             categories.remove(category_input[1:])
                     else:
-                        if(True):  #Will be: CategoryApi.isValid(category_input)
+                        if(CategoryApi.exists(category_input)):
                             categories.append(category_input)
                         else:
                             print("Sorry, that's not a valid category")
@@ -96,14 +96,16 @@ class New(Function):
             
 
     def category(self, args:[str] = []) -> None:
-
         for name in args:
-            if click.confirm("Do you want to create category '"+str(name)+"'?", default=True):
-                try:
-                    CategoryApi.add(str(name))
-                    print("category '"+str(name)+"' was created.")
-                except:
-                    print("The category wasn't created, something went wrong")
+            if click.confirm("Do you want to create category '"+name+"'?", default=True):
+                if(not CategoryApi.exists(name)):
+                    try:    
+                        CategoryApi.add(str(name))
+                        print("category '"+str(name)+"' was created.")
+                    except:
+                        print("The category wasn't created, something went wrong")
+                else:
+                    print("This category already exists")
 
 
     #Execute the function, you pass the arguments given by the user as a list.
