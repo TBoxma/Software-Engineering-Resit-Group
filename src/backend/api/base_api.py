@@ -36,7 +36,7 @@ class BaseModelApi:
 
     @classmethod
     @query
-    def list_all(cls, session: Session) -> List[Category] | List[Task]:
+    def list_all(cls, session: Session) -> list[Category] | list[Task]:
         return session.scalars(select(cls().model)).all()
 
     @classmethod

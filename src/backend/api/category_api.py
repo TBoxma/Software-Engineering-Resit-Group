@@ -1,5 +1,8 @@
+from database.session_wrapper import query
 from src.backend.api.base_api import BaseModelApi
 from src.backend.model.category import Category
+
+from sqlalchemy.orm import Session
 
 
 class CategoryApi(BaseModelApi):
@@ -9,3 +12,10 @@ class CategoryApi(BaseModelApi):
     """
     def __init__(self) -> None:
         super().__init__(Category)
+
+    @query
+    @classmethod
+    def exists(cls, name: str, session: Session) -> bool:
+        all_categories = cls().list_all(session)
+        
+        return name in all_categories
