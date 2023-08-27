@@ -13,9 +13,9 @@ class CategoryApi(BaseModelApi):
     def __init__(self) -> None:
         super().__init__(Category)
 
-    @query
     @classmethod
-    def exists(cls, name: str, session: Session) -> bool:
-        all_categories = cls().list_all(session)
-        
-        return name in all_categories
+    def exists(cls, name: str) -> bool:
+        all_categories = cls().list_all()
+        names = [c.name for c in all_categories]
+
+        return name in names
