@@ -52,6 +52,7 @@ class New(Function):
                                 print(("Created task '"+task_name+"'"))
                             except:
                                 print("The task wasn't created, something went wrong")
+                            return
             else:
                 print((task_name+" already exists."))
 
