@@ -8,16 +8,17 @@ from src.frontend.cli_functions.update import *
 from src.frontend.cli_functions.function import *
 from src.frontend.cli_functions.help import *
 from src.frontend.cli_functions.add import *
+from src.frontend.cli_functions.report import *
 
 
 class CLI:
     # whether to display a greetings message
     greetings_ = True
 
-    def __init__(self, name="") -> None:
+    def _init_(self, name="") -> None:
         self.name = name
     
-    def __str__(self) -> str:
+    def _str_(self) -> str:
         return self.name
     
     def start(self):
@@ -44,10 +45,9 @@ class CLI:
                     Delete().execute(command_args[1:])
                 case "add":
                     Add().execute(command_args[1:])
+                case "report":
+                    Report().execute(command_args[1:])
                 case "exit":
                     break
                 case _:
                     print("Type 'help' for a list of commands")
-
-
-
