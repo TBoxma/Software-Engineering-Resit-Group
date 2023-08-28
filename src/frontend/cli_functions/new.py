@@ -6,7 +6,7 @@ from src.frontend.cli_functions.function import Function
 
 class New(Function):
     main_description = ["new task|category", "create a new task or category"]
-    task_description = ['new task (name)', "create a new task"]
+    task_description = ['new task [name]', "create one or more new tasks, you'll be prompted to add or remove categories. You can add or remove 'homework' by typing 'homework' or '-homework'"]
     category_description = ['new category [name]', "create one or more new categories."]
 
     #Get the description as a list of string tuples [[command, desc]]
@@ -36,7 +36,8 @@ class New(Function):
                     categories=[]
                     while True:
                         category_input = click.prompt("add or remove a category")
-                        if (category_input[0] == '-' and len(category_input)>2):
+                        print(category_input)
+                        if (category_input[0] is '-' and len(category_input)>1):
                             if(category_input[1:] in categories):
                                 categories.remove(category_input[1:])
                         else:
@@ -45,11 +46,12 @@ class New(Function):
                             else:
                                 print("Sorry, that's not a valid category")
                             
-                            if click.confirm((task_name+" will have categories "+str(categories)+". Is that correct?")):
-                                try:
-                                    TaskApi.add(task_name, categories)
-                                except:
-                                    print("The task wasn't created, something went wrong")
+                        if click.confirm((task_name+" will have categories "+str(categories)+". Is that correct?")):
+                            try:
+                                TaskApi.add(task_name, categories)
+                                print(("Created task '"+task_name+"'"))
+                            except:
+                                print("The task wasn't created, something went wrong")
             else:
                 print((task_name+" already exists."))
 
