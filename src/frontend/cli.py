@@ -1,4 +1,5 @@
 import click
+import shlex
 
 from src.frontend.cli_functions.delete import *
 from src.frontend.cli_functions.new import *
@@ -28,7 +29,7 @@ class CLI:
             self.greetings_ = False
         while True:
             command_str = click.prompt("  >", type=str)
-            command_args = command_str.split(' ')
+            command_args = shlex.split(command_str)
             match command_args[0]:
                 case "help":
                     Help().execute(command_args[1:])
