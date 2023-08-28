@@ -4,7 +4,7 @@ from src.backend.api.task_api import TaskApi
 
 
 class Delete(Function):
-    main_description = ["del task|category", "delete a task or category"]
+    main_description = ["del {task|category}", "delete a task or category"]
     task_description = ['del task (name)', "delete a task"]
     category_description = ['del category (name)', "delete a category"]
 

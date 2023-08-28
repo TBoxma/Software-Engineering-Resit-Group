@@ -1,5 +1,8 @@
+from database.session_wrapper import query
 from src.backend.api.base_api import BaseModelApi
 from src.backend.model.category import Category
+
+from sqlalchemy.orm import Session
 
 
 class CategoryApi(BaseModelApi):

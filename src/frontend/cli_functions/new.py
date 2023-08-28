@@ -5,9 +5,9 @@ from src.frontend.cli_functions.function import Function
 
 
 class New(Function):
-    main_description = ["new task|category", "create a new task or category"]
-    task_description = ['new task (name)', "create a new task"]
-    category_description = ['new category (name)', "create a new category"]
+    main_description = ["new {task|category} [name]", "create one or more new tasks or categories"]
+    task_description = ['new task [name]', "create one or more new tasks, you'll be prompted to add or remove categories. You can add or remove 'homework' by typing 'homework' or '-homework'"]
+    category_description = ['new category [name]', "create one or more new categories."]
 
     #Get the description as a list of string tuples [[command, desc]]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
@@ -27,87 +27,48 @@ class New(Function):
     
 
     def task(self, args:[str] = []) -> None:
-        print(args)
-        given_attributes= {}
-        given_attributes["name"] = "new task"
-        given_attributes["categories"] = ""
-
-        # List of attributes that the user needs to give:
-        needs={}
-        needs["name"] = True
-        needs["id"] = False
-        needs["categories"] = True
-
-        # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
-        if(len(args)>0):
-            for unparsed_attribute in args[0:]:
-                parsed_attribute = str(unparsed_attribute).split(':')
-                if (len(parsed_attribute) == 2):
-                    if(needs.get(parsed_attribute[0])):
-                        try:
-                            given_attributes[parsed_attribute[0]] = parsed_attribute[1]
-                        except KeyError:
-                            continue
-                        try:
-                            needs[parsed_attribute[0]] = False
-                        except KeyError:
-                            continue
-                    else:
-                        given_attributes["name"] = parsed_attribute[0]
-                        
-        #get the needs that haven't been set yet
-        needs_to_do = {key : val for key, val in needs.items() if val == True}
-        if(len(needs_to_do)>0):
-            for need in needs_to_do:
-                given_attributes[need] = click.prompt(need, type=str, default="")
-        
-        print("Creating new task with attributes", str(given_attributes))
-        categories = given_attributes["categories"].split(',')
-        if len(categories) == 1 and categories[0]=="":
-            categories = []
-        try:
-            TaskApi.add(given_attributes["name"], categories)
-        except:
-            print("The task wasn't created, something went wrong")
-            
+        #Each arg represents a new task to create
+        if(len(args)==0):
+            args = {click.prompt("task name")}
+        for task_name in args:
+            if(not TaskApi.exists(task_name)):
+                if click.confirm(("Do you want to create a task named '"+task_name+"'?"), default=True):
+                    categories=[]
+                    while True:
+                        category_input = click.prompt("add or remove a category")
+                        print(category_input)
+                        if (category_input[0] == '-' and len(category_input)>1):
+                            if(category_input[1:] in categories):
+                                categories.remove(category_input[1:])
+                        else:
+                            if(CategoryApi.exists(category_input)):
+                                categories.append(category_input)
+                            else:
+                                print("Sorry, that's not a valid category")
+                            
+                        if click.confirm((task_name+" will have categories "+str(categories)+". Is that correct?")):
+                            try:
+                                TaskApi.add(task_name, categories)
+                                print(("Created task '"+task_name+"'"))
+                            except:
+                                print("The task wasn't created, something went wrong")
+                            return
+            else:
+                print((task_name+" already exists."))
 
     def category(self, args:[str] = []) -> None:
-        print(args)
-        given_attributes= {}
-        given_attributes["name"] = "new category"
-
-        # List of attributes that the user needs to give:
-        needs={}
-        needs["name"] = True
-        needs["id"] = False
-        needs["categories"] = False
-
-        # See which attributes are already passed in the input, and update given_attributes and needs accordingly:
-        if(len(args)>0):
-            for unparsed_attribute in args[0]:
-                parsed_attribute = str(unparsed_attribute).split(':')
-                if (len(parsed_attribute) == 2):
-                    if(needs.get(parsed_attribute[0])):
-                        try:
-                            given_attributes[parsed_attribute[0]] = parsed_attribute[1]
-                        except KeyError:
-                            continue
-                        try:
-                            needs[parsed_attribute[0]] = False
-                        except KeyError:
-                            continue
-                        
-        #get the needs that haven't been set yet
-        needs_to_do = {key : val for key, val in needs.items() if val == True}
-        if(len(needs_to_do)>0):
-            for need in needs_to_do:
-                given_attributes[need] = click.prompt(need, type=str, default="")
-        
-        print("Creating new category with attributes", str(given_attributes))
-        try:
-            CategoryApi.add(given_attributes["name"])
-        except:
-            print("The category wasn't created, something went wrong")
+        if(len(args)==0):
+            args = {click.prompt("category name")}
+        for name in args:
+            if click.confirm("Do you want to create category '"+name+"'?", default=True):
+                if(not CategoryApi.exists(name)):
+                    try:    
+                        CategoryApi.add(str(name))
+                        print("category '"+str(name)+"' was created.")
+                    except:
+                        print("The category wasn't created, something went wrong")
+                else:
+                    print("This category already exists")
 
 
     #Execute the function, you pass the arguments given by the user as a list.
