@@ -12,10 +12,3 @@ class CategoryApi(BaseModelApi):
     """
     def __init__(self) -> None:
         super().__init__(Category)
-
-    @classmethod
-    def exists(cls, name: str) -> bool:
-        all_categories = cls().list_all()
-        names = [c.name for c in all_categories]
-
-        return name in names
