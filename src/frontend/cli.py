@@ -15,10 +15,10 @@ class CLI:
     # whether to display a greetings message
     greetings_ = True
 
-    def _init_(self, name="") -> None:
+    def __init__(self, name="") -> None:
         self.name = name
     
-    def _str_(self) -> str:
+    def __str__(self) -> str:
         return self.name
     
     def start(self):
