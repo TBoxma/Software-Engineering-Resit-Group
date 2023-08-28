@@ -49,3 +49,9 @@ def test_should_list_categories():
 
     assert set([c1, c2, c3]) <= set(c_names)
 
+def test_should_return_true_category_exists():
+    c = category_test_name()
+
+    CategoryApi.add(c)
+
+    assert CategoryApi.exists(c)

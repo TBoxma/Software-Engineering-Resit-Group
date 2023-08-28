@@ -6,26 +6,17 @@ from src.frontend.cli_functions.show import *
 from src.frontend.cli_functions.update import *
 from src.frontend.cli_functions.function import *
 from src.frontend.cli_functions.help import *
-    
-class Help(Function):
-    helper_string = '\n'.join([
-        "help:         get all possible commands as a list",
-        "exit:         exit the program",
-        "new task:     add a task",
-        "new category: add a category",
-        "update task:  change task attributes",
-        "del task:     delete a task",
-        "del category: delete a category",
-        "show task:    show a category",
-        "show category:show a category",
-        "exit:         exit the program"
-    ])
+from src.frontend.cli_functions.add import *
 
+class Help(Function):
     exit_desc = ['exit', 'escape the program']
 
-    main_description = ["help", "get a list of commands, ask for a specific command with 'help [command]'"]
+    bracket_description = ["(argument)", "you can type one word here"]
+    curly_bracket_description = ["{argument1|argument2}", "you can type one of the words here"]
+    list_description = ["[name]", "you can type several words, seperated by a space here. If you want the name to contain a space, surround it with parenthesis"]
+    main_description = ["help", "get a list of commands, ask for a specific command with 'help (command)'"]
     help_description = ["help", "get a list of commands"]
-    help_cmd_description = ["help [command]", "get help with a specific command"]
+    help_cmd_description = ["help (command)", "get help with a specific command"]
     #Get the description as a list of string tuples [[command, desc]]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
@@ -48,17 +39,21 @@ class Help(Function):
     def execute(self, args:[str] = []) -> None:
         helper_list = []
         if(len(args) == 0):
+            helper_list.append(self.bracket_description)
+            helper_list.append(self.curly_bracket_description)
+            helper_list.append(self.list_description)
             helper_list.append(Delete().get_description_generic())
             helper_list.append(New().get_description_generic())
             helper_list.append(Update().get_description_generic())
             helper_list.append(Show().get_description_generic())
+            helper_list.append(Add().get_description_generic())
             helper_list.append(Help().get_description_generic())
             helper_list.append(self.exit_desc)
         else:
             match args[0]:
                 case "del"|"delete"|"remove"|"rm"|"houdoe":
                     helper_list = Delete().get_description_precise(args[1:])
-                case "new"|"add"|"create"|"make":
+                case "new"|"create"|"make":
                     helper_list = New().get_description_precise(args[1:])
                 case "update"|"change"|"alter":
                     helper_list = Update().get_description_precise(args[1:])
@@ -66,8 +61,12 @@ class Help(Function):
                     helper_list = Show().get_description_precise(args[1:])
                 case "help":
                     helper_list = Help().get_description_precise(args[1:])
+                case "add":
+                    helper_list = Add().get_description_precise(args[1:])
                 case "exit"|"close"|"shutdown":
                     helper_list = [self.exit_desc]
+                case "notation"|"brackets":
+                    helper_list = [self.bracket_description, self.curly_bracket_description, self.list_description]
                 case _:
                     helper_list = [[args[0], "does not exist or cannot be called in this context"]]
         

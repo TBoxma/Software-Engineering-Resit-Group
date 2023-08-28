@@ -36,7 +36,7 @@ class BaseModelApi:
 
     @classmethod
     @query
-    def list_all(cls, session: Session) -> List[Category] | List[Task]:
+    def list_all(cls, session: Session) -> list[Category] | list[Task]:
         return session.scalars(select(cls().model)).all()
 
     @classmethod
@@ -83,6 +83,13 @@ class BaseModelApi:
         :raises: TaskNotFoundException: If the task with the given name is not found.
         """
         return cls()._get_model_by_name(name, session)
+
+    @classmethod
+    def exists(cls, name: str) -> bool:
+        all_models = cls().list_all()
+        names = [m.name for m in all_models]
+
+        return name in names
     
     def _get_model_by_name(self, name: str, session: Session) -> Category | Task:
         """

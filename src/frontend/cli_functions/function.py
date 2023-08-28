@@ -5,7 +5,7 @@ class Function:
     def execute(self, args:[str] = []) -> None:
         return
     
-    main_description = ["new task|category", "create a new task or category"]
+    main_description = ["new {task|category}", "create a new task or category"]
     task_description = ['new task (name)', "create a new task"]
     category_description = ['new category (name)', "create a new category"]
 

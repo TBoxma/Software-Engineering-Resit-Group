@@ -2,7 +2,7 @@ from src.frontend.cli_functions.function import Function
 
 class Update(Function):
 
-    main_description = ["update task|category", "update a task or category"]
+    main_description = ["update {task|category}", "update a task or category"]
     task_description = ['update task (name)', "update a task"]
     category_description = ['update category (name)', "update a category"]
 

@@ -74,3 +74,54 @@ def test_should_delete_task():
 
     with pytest.raises(TaskNotFoundException, match=task_name):
         TaskApi.get_by_name(task_name)
+
+def test_should_assign_new_category_to_task():
+    c1 = category_test_name()
+    c2 = category_test_name()
+    t = task_test_name()
+
+    CategoryApi.add(c1)
+    CategoryApi.add(c2)
+    TaskApi.add(t, [c2])
+
+    t_without_c1: Task = TaskApi.get_by_name(t)
+    assert len(t_without_c1.categories) == 1
+
+    TaskApi.add_categories(t, [c2])
+    
+    t_with_c2: Task = TaskApi.get_by_name(t)
+    cats = [ct.name for ct in t_with_c2.categories]
+    assert c2 in cats
+
+def test_should_fail_to_assign_new_category_to_task_task_not_exist():
+    c = category_test_name()
+    t = task_test_name()
+
+    CategoryApi.add(c)
+
+    with pytest.raises(TaskNotFoundException, match=t):
+        TaskApi.add_categories(t, [c])
+
+def test_should_remove_category_from_task():
+    c1 = category_test_name()
+    c2 = category_test_name()
+    t = task_test_name()
+
+    CategoryApi.add(c1)
+    CategoryApi.add(c2)
+
+    TaskApi.add(t, [c1, c2])
+
+    TaskApi.remove_categories(t, [c2])
+
+    task: Task = TaskApi.get_by_name(t)
+    cats = [ct.name for ct in task.categories]
+
+    assert c1 in cats and c2 not in cats
+
+def test_should_return_true_task_exists():
+    t = task_test_name()
+
+    TaskApi.add(t, [])
+
+    assert TaskApi.exists(t)
