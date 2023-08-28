@@ -14,10 +14,10 @@ class Add(Function):
         if len(args)==0:
             return [self.task_description, self.category_description]
         match args[0]:
-            case 'today':
-                return [self.today_description]
-            case 'other_day':
-                return [self.otherday_description]
+            case 'time':
+                return [self.today_description, self.otherday_description]
+            case 'category':
+                return [self.category_description]
             case _:
                 return [[args[0], "does not exist or cannot be called in this context"]]
                         
@@ -28,8 +28,9 @@ class Add(Function):
     def time(self, args:[str] = []) -> None:
         return
     
+    #Add categories to an existing task
     def category(self, args:[str] = []) -> None:
-        #Take args[0] as the task, and add the remaining args as categories to that task
+        TaskApi.add_categories(args[0], args[1:])
         return
     
     def execute(self, args:[str] = []) -> None:
