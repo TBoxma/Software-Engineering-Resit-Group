@@ -33,14 +33,14 @@ class Show(Function):
             tasks: list[Task] = TaskApi.list_all()
             for task in tasks:
                 categories = [category.name for category in task.categories]
-                print("Task name: "+task.name)
-                print("Task categories: "+", ".join(categories))
+                print(f"Task name: {task.name}")
+                print(f"Task categories: {(', '.join(categories))}")
                 print()
         else:
             task: Task = TaskApi.get_by_name(args[0])
             categories = [category.name for category in task.categories]
-            print("Task name: "+task.name)
-            print("Task categories: "+", ".join(categories))
+            print(f"Task name: {task.name}")
+            print(f"Task categories: {(', '.join(categories))}")
             print()
 
     def category(self, args:[str] = []) -> None:
