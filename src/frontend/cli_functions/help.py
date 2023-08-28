@@ -12,7 +12,7 @@ class Help(Function):
 
     bracket_description = ["(argument)", "you can type one word here"]
     curly_bracket_description = ["{argument1|argument2}", "you can type one of the words here"]
-    list_description = ["[name]", "you can type several words, seperated by a space here"]
+    list_description = ["[name]", "you can type several words, seperated by a space here. If you want the name to contain a space, surround it with parenthesis"]
     main_description = ["help", "get a list of commands, ask for a specific command with 'help (command)'"]
     help_description = ["help", "get a list of commands"]
     help_cmd_description = ["help (command)", "get help with a specific command"]
