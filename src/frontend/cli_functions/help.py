@@ -46,8 +46,8 @@ class Help(Function):
             helper_list.append(New().get_description_generic())
             helper_list.append(Update().get_description_generic())
             helper_list.append(Show().get_description_generic())
-            helper_list.append(Help().get_description_generic())
             helper_list.append(Add().get_description_generic())
+            helper_list.append(Help().get_description_generic())
             helper_list.append(self.exit_desc)
         else:
             match args[0]:
