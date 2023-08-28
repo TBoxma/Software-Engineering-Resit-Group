@@ -28,6 +28,8 @@ class New(Function):
 
     def task(self, args:[str] = []) -> None:
         #Each arg represents a new task to create
+        if(len(args)==0):
+            args = {click.prompt("task name")}
         for task_name in args:
             if(not TaskApi.exists(task_name)):
                 if click.confirm(("Do you want to create a task named '"+task_name+"'?"), default=True):
