@@ -9,7 +9,9 @@ from src.frontend.cli_functions.help import *
 
 
 class CLI:
-    
+    # whether to display a greetings message
+    greetings_ = True
+
     def __init__(self, name="") -> None:
         self.name = name
     
@@ -17,6 +19,13 @@ class CLI:
         return self.name
     
     def start(self):
+        if self.greetings_:
+            print("Greetins from the Time Tracking App!")
+            print("With this app, you can conveniently add tasks and track time spent on them!")
+            print("Type 'help' for a supported list of commands:")
+            print()
+            
+            self.greetings_ = False
         while True:
             command_str = click.prompt("  >", type=str)
             command_args = command_str.split(' ')
