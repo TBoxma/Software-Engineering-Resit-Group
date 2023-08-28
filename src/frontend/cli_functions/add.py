@@ -116,8 +116,16 @@ class Add(Function):
             pass
 
         if(task_time and task_name and passed_date):
+            date_entry = datetime.datetime.strptime(passed_date, "%Y-%m-%d").date()
+
             print(f"adding {task_time} minutes to {task_name} on {passed_date}")
-            TaskApi.add_duration(datetime.datetime.strptime(passed_date, "%Y-%m-%d"), task_time, task_name)
+
+            previous_time = TaskApi.get_task_time(date_entry, task_name)
+
+            if previous_time:
+                TaskApi.update_task_duration(date_entry, task_name, task_time)
+            else:
+                TaskApi.add_duration(date_entry, task_time, task_name)
      
     
     #Add categories to an existing task
@@ -134,5 +142,3 @@ class Add(Function):
                     self.category(args[1:])
         else:
             print(self.get_description_generic())
-
-
