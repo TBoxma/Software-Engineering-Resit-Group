@@ -3,6 +3,7 @@ from database.session_wrapper import query
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, select
 from src.backend.api.base_api import BaseModelApi
+from src.backend.exception import TaskNotFoundException
 from src.backend.model.category import Category
 
 from src.backend.model.task import Task
@@ -19,10 +20,54 @@ class TaskApi(BaseModelApi):
         Initializes the TaskApi instance with the Task model.
         """
         super().__init__(Task)
-
-    @classmethod
+    
+    @staticmethod
     @query
-    def add(cls, name: str, category_names: list[str], session: Session):
+    def add_categories(name: str, category_names: list[str], session: Session):
+        """
+        Add a category to an existing task.
+
+        :param name: Task name
+        :param category_names: List of category names to assign to the task
+        :raises TaskNotFoundException: If task with provided name does not exist
+        """
+        stm = select(Category).where(Category.name.in_(category_names))
+        categories: list[Category] = session.scalars(stm).all()
+
+        task: Task = session.scalar(select(Task).where(Task.name == name))
+
+        if task:
+            task.categories.extend(categories)
+        else:
+            raise TaskNotFoundException(f"Task with name '{name}' was not found")
+
+        session.commit()
+
+    @staticmethod
+    @query
+    def remove_categories(name: str, category_names: list[str], session: Session):
+        """
+        Remove categories from a specific task
+
+        :param name: Task name
+        :param category_names: List of category names to remove
+        :raises TaskNotFoundException: If task with provided name does not exist
+        """
+        task: Task = session.scalar(select(Task).where(Task.name == name))
+
+        if task:
+            old_categories = task.categories
+            new_categories = [c for c in old_categories if c.name not in category_names]
+
+            task.categories = new_categories
+        else:
+            raise TaskNotFoundException(f"Task with name '{name}' was not found")
+
+        session.commit()
+
+    @staticmethod
+    @query
+    def add(name: str, category_names: list[str], session: Session):
         """
         Add a new task with the given name and associated with a specific category.
 
@@ -56,7 +101,6 @@ class TaskApi(BaseModelApi):
 
         task.durations.append(task_time)
 
-        session.add(task)
         session.add(task_time)
         session.commit()
 
@@ -86,7 +130,6 @@ class TaskApi(BaseModelApi):
 
         task.durations.append(task_time)
 
-        session.add(task)
         session.add(task_time)
         session.commit()
 
@@ -150,10 +193,3 @@ class TaskApi(BaseModelApi):
         time_difference = (end_datetime - start_datetime).total_seconds() / 60
 
         return int(time_difference)
-    
-    @classmethod
-    def exists(cls, name: str) -> bool:
-        all_tasks = cls().list_all()
-        names = [c.name for c in all_tasks]
-
-        return name in names
