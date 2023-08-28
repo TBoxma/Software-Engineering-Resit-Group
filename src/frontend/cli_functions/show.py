@@ -7,7 +7,7 @@ from src.backend.model.task import Task
 
 class Show(Function):
 
-    main_description = ["show task|category", "show a task or category"]
+    main_description = ["show {task|category}", "show a task or category"]
     task_description = ['show task (name)', "show a task"]
     category_description = ['show category (name)', "show a category"]
 

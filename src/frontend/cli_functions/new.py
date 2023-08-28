@@ -5,7 +5,7 @@ from src.frontend.cli_functions.function import Function
 
 
 class New(Function):
-    main_description = ["new task|category", "create a new task or category"]
+    main_description = ["new {task|category}", "create a new task or category"]
     task_description = ['new task [name]', "create one or more new tasks, you'll be prompted to add or remove categories. You can add or remove 'homework' by typing 'homework' or '-homework'"]
     category_description = ['new category [name]', "create one or more new categories."]
 
