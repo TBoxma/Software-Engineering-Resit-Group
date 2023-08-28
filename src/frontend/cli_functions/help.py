@@ -61,6 +61,8 @@ class Help(Function):
                     helper_list = Help().get_description_precise(args[1:])
                 case "exit"|"close"|"shutdown":
                     helper_list = [self.exit_desc]
+                case "notation"|"brackets":
+                    helper_list = [self.bracket_description, self.curly_bracket_description, self.list_description]
                 case _:
                     helper_list = [[args[0], "does not exist or cannot be called in this context"]]
         
