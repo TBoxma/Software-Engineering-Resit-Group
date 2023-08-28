@@ -35,16 +35,16 @@ class New(Function):
                 if click.confirm(("Do you want to create a task named '"+task_name+"'?"), default=True):
                     categories=[]
                     while True:
-                        category_input = click.prompt("add or remove a category")
+                        category_input = click.prompt("add or remove a category", default="")
                         print(category_input)
-                        if (category_input[0] == '-' and len(category_input)>1):
+                        if (len(category_input)>1 and category_input[0] == '-'):
                             if(category_input[1:] in categories):
                                 categories.remove(category_input[1:])
                         else:
                             if(CategoryApi.exists(category_input)):
                                 categories.append(category_input)
                             else:
-                                print("Sorry, that's not a valid category")
+                                print("Not a valid category")
                             
                         if click.confirm((task_name+" will have categories "+str(categories)+". Is that correct?")):
                             try:
