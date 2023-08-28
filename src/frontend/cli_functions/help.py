@@ -6,6 +6,7 @@ from src.frontend.cli_functions.show import *
 from src.frontend.cli_functions.update import *
 from src.frontend.cli_functions.function import *
 from src.frontend.cli_functions.help import *
+from src.frontend.cli_functions.add import *
 
 class Help(Function):
     exit_desc = ['exit', 'escape the program']
@@ -45,13 +46,14 @@ class Help(Function):
             helper_list.append(New().get_description_generic())
             helper_list.append(Update().get_description_generic())
             helper_list.append(Show().get_description_generic())
+            helper_list.append(Add().get_description_generic())
             helper_list.append(Help().get_description_generic())
             helper_list.append(self.exit_desc)
         else:
             match args[0]:
                 case "del"|"delete"|"remove"|"rm"|"houdoe":
                     helper_list = Delete().get_description_precise(args[1:])
-                case "new"|"add"|"create"|"make":
+                case "new"|"create"|"make":
                     helper_list = New().get_description_precise(args[1:])
                 case "update"|"change"|"alter":
                     helper_list = Update().get_description_precise(args[1:])
@@ -59,6 +61,8 @@ class Help(Function):
                     helper_list = Show().get_description_precise(args[1:])
                 case "help":
                     helper_list = Help().get_description_precise(args[1:])
+                case "add":
+                    helper_list = Add().get_description_precise(args[1:])
                 case "exit"|"close"|"shutdown":
                     helper_list = [self.exit_desc]
                 case "notation"|"brackets":

@@ -7,6 +7,7 @@ from src.frontend.cli_functions.show import *
 from src.frontend.cli_functions.update import *
 from src.frontend.cli_functions.function import *
 from src.frontend.cli_functions.help import *
+from src.frontend.cli_functions.add import *
 
 
 class CLI:
@@ -41,6 +42,8 @@ class CLI:
                     Show().execute(command_args[1:])
                 case "del":
                     Delete().execute(command_args[1:])
+                case "add":
+                    Add().execute(command_args[1:])
                 case "exit":
                     break
                 case _:
