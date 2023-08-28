@@ -1,3 +1,4 @@
+from ast import Add
 import inspect
 
 from src.frontend.cli_functions.delete import *
@@ -46,6 +47,7 @@ class Help(Function):
             helper_list.append(Update().get_description_generic())
             helper_list.append(Show().get_description_generic())
             helper_list.append(Help().get_description_generic())
+            helper_list.append(Add().get_description_generic())
             helper_list.append(self.exit_desc)
         else:
             match args[0]:
