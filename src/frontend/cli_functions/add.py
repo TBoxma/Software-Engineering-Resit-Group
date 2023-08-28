@@ -8,13 +8,13 @@ import re
 
 class Add(Function):
     main_description = ["add {time|category}", "Add spent time to an existing taskor add a category. For details, type 'help add {time|categories}'"]
-    today_description = ['add time (task) (minutes)', "add an amount of minutes to a task. 80 minutes can be formatted like '80', '1h20m', or '14:00-15:20'"]
-    otherday_description = ['add time (task) (minutes) (date)', "add an amount of minutes to a task on a specific day. Write the date as YYYY-MM-DD"]
-    category_description = ['add category (task) [category]', "add one or more categories to a task"]
+    today_description = ["add time (task) (minutes)", "add an amount of minutes to a task. 80 minutes can be formatted like '80', '1h20m', or '14:00-15:20'"]
+    otherday_description = ["add time (task) (minutes) (date)", "add an amount of minutes to a task on a specific day. Write the date as YYYY-MM-DD"]
+    category_description = ["add category (task) [category]", "add one or more categories to a task"]
     #Get the description as a list of string tuples [[command, desc]]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
         if len(args)==0:
-            return [self.task_description, self.category_description]
+            return [self.today_description, self.otherday_description, self.category_description]
         match args[0]:
             case 'time':
                 return [self.today_description, self.otherday_description]
