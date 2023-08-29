@@ -76,7 +76,7 @@ class Report(Function):
                 print(f"Percentage of total time spent on specified categories from {date_from} to {date_to} is displayed below:")
                 print()
                 for category in total_time_cats:
-                    print(f"{category}: {total_time_cats[category]}")
+                    print(f"{category}: {total_time_cats[category]}%")
             case 5:
                 tasks = click.prompt("Enter a list of tasks (comma-separated)", type=str)
                 tasks_list = [task.strip() for task in tasks.split(',')]
@@ -86,7 +86,7 @@ class Report(Function):
                 print(f"Percentage of total time spent on specified tasks from {date_from} to {date_to} is displayed below:")
                 print()
                 for task in total_time_tasks:
-                    print(f"{task}: {total_time_tasks[task]}")
+                    print(f"{task}: {total_time_tasks[task]}%")
             case _:
                 click.echo("Invalid report number.")
 
