@@ -23,7 +23,7 @@ class CLI:
     
     def start(self):
         if self.greetings_:
-            print("Greetins from the Time Tracking App!")
+            print("Greetings from the Time Tracking App!")
             print("With this app, you can conveniently add tasks and track time spent on them!")
             print("Type 'help' for a supported list of commands:")
             print()
