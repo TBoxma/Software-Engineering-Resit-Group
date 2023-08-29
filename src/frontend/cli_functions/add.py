@@ -115,6 +115,8 @@ class Add(Function):
                     task_time = min2-min1
         except:
             pass
+        if(not task_time):
+            print(f"'{task_time_unparsed}' is not a valid time format.")
 
         if(task_time and task_name and passed_date):
             date_entry = datetime.datetime.strptime(passed_date, "%Y-%m-%d").date()
