@@ -133,7 +133,16 @@ class Add(Function):
     
     #Add categories to an existing task
     def category(self, args:[str] = []) -> None:
-        TaskApi.add_categories(args[0], args[1:])
+        if(len(args)>1):
+            if(TaskApi.exists(args[0])):
+                for category in args[1:]:
+                    if(not CategoryApi.exists(category)):
+                        print(f"categgory '{category}' doesn't exist")
+                TaskApi.add_categories(args[0], args[1:])
+            else:
+                print(f"task '{args[0]}' doesn't exist")
+        else:
+            print(self.get_description_precise(['category']))
         return
     
     def execute(self, args:[str] = []) -> None:

@@ -40,9 +40,11 @@ class Show(Function):
             tasks: list[Task] = TaskApi.list_all()
             for task in tasks:
                 categories = [category.name for category in task.categories]
-                print(f"Task name: '{task.name}'")
+                print(f"Task name: {task.name}")
                 print(f"Task categories: {(', '.join(categories))}")
                 print()
+            if(len(tasks) == 0):
+                print("there are no tasks yet, create one with 'new tasks (name)")
         else:
             if(TaskApi.exists(args[0])):
                 task: Task = TaskApi.get_by_name(args[0])
@@ -61,6 +63,8 @@ class Show(Function):
                 print("Category name: "+category.name)
                 print("Category tasks: "+", ".join(tasks))
                 print()
+            if(len(categories) == 0):
+                print("there are no categories yet, create one with 'new category (name)")
         else:
             if(CategoryApi.exists(args[0])):
                 category: Category = CategoryApi.get_by_name(args[0])
