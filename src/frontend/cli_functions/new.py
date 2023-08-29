@@ -80,6 +80,8 @@ class New(Function):
                     self.task(args[1:])
                 case 'category':
                     self.category(args[1:])
+                case _:
+                    print(self.get_description_precise())
         else:
-            print(self.get_description_generic())
+            print(self.get_description_precise())
 

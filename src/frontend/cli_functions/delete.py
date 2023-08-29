@@ -44,9 +44,9 @@ class Delete(Function):
                 try:
                     CategoryApi.delete_by_name(arg)
                 except:
-                    print(f"{arg} wasn't deleted, something went wrong")
+                    print(f"'{arg}' wasn't deleted, something went wrong")
             else:
-                print(f"{arg} doesn't exist.")
+                print(f"'{arg}' doesn't exist.")
         
     #Execute the function, you pass the arguments given by the user as a list.
     #Other functions in this class handle the rest of the arguments.
@@ -57,5 +57,7 @@ class Delete(Function):
                     self.task(args[1:])
                 case 'category':
                     self.category(args[1:])
+                case _:
+                    print(self.get_description_precise())
         else:
-            print(self.get_description_generic())
+            print(self.get_description_precise())

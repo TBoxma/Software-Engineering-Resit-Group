@@ -44,7 +44,6 @@ class Add(Function):
             return True
         # If the date validation goes wrong
         except ValueError:
-            print("Incorrect time format, type HH:MM-HH:MM")
             return False
 
     def time(self, args:[str] = []) -> None:
@@ -61,8 +60,10 @@ class Add(Function):
         if(len(args)==3):
             passed_date = args[2]
         if(not self.check_date_format(passed_date)):
+            print("Incorrect time format, type HH:MM-HH:MM")
             return
         if(not TaskApi.exists(task_name)):
+            print(f"'{task_name}' doesn't exist")
             return
         
         #Handle task time
@@ -140,5 +141,7 @@ class Add(Function):
                     self.time(args[1:])
                 case 'category':
                     self.category(args[1:])
+                case _:
+                    print(self.get_description_precise())
         else:
-            print(self.get_description_generic())
+            print(self.get_description_precise())

@@ -15,27 +15,6 @@ class Show(Function):
     
     time_description = ["show total time {task|category} (name)", "show time spent on a task or category"]
 
-    # total time on all tasks in time range
-    # total time grouped by categories
-    # total time on task
-    # category time as percentage
-
-    #show time {task|category} (name) (start) (finish)
-    #show time (category) (start) (finish)
-    #show percentage 
-
-    # report 
-    # Here are possible reports, type corresponding number for report that you need
-    # 1: total time
-    # 2: total time by categories
-    # .
-    # . 
-    # .
-    # 5: percentage of total time by categories
-    # > 4
-    # start date: asdsld
-    # end date: wsldak;dasd
-    # report
 
     #Get the description as a list of string tuples [[command, desc]]
     def get_description_precise(self, args:[str] = []) -> [[str,str]]:
@@ -55,22 +34,25 @@ class Show(Function):
     def get_description_generic(self) -> [str,str]:
         return self.main_description
               
-    #tbd
+    #Show information belonging to a task
     def task(self, args:[str] = []) -> None:
         if(len(args) == 0):
             tasks: list[Task] = TaskApi.list_all()
             for task in tasks:
                 categories = [category.name for category in task.categories]
-                print(f"Task name: {task.name}")
+                print(f"Task name: '{task.name}'")
                 print(f"Task categories: {(', '.join(categories))}")
                 print()
         else:
-            task: Task = TaskApi.get_by_name(args[0])
-            categories = [category.name for category in task.categories]
-            print(f"Task name: {task.name}")
-            print(f"Task categories: {(', '.join(categories))}")
-            print()
-
+            if(TaskApi.exists(args[0])):
+                task: Task = TaskApi.get_by_name(args[0])
+                categories = [category.name for category in task.categories]
+                print(f"Task name: {task.name}")
+                print(f"Task categories: {(', '.join(categories))}")
+                print()
+            else:
+                print(f"'{args[0]}' doesn't exist")
+    #Show information belonging to a category
     def category(self, args:[str] = []) -> None:
         if(len(args) == 0):
             categories: list[Category] = CategoryApi.list_all()
@@ -80,11 +62,15 @@ class Show(Function):
                 print("Category tasks: "+", ".join(tasks))
                 print()
         else:
-            category: Category = CategoryApi.get_by_name(args[0])
-            tasks = [task.name for task in category.tasks]
-            print("Category name: "+category.name)
-            print("Category tasks: "+", ".join(tasks))
-            print()
+            if(CategoryApi.exists(args[0])):
+                category: Category = CategoryApi.get_by_name(args[0])
+                tasks = [task.name for task in category.tasks]
+                print("Category name: "+category.name)
+                print("Category tasks: "+", ".join(tasks))
+                print()
+            else:
+                print(f"'{args[0]}' doesn't exist")
+              
 
     #Execute the function, you pass the arguments given by the user as a list.
     #Other functions in this class handle the rest of the arguments.
@@ -98,5 +84,7 @@ class Show(Function):
                 # The case if we want to show the time spent on a task or category.
                 case 'time':
                     self.time_query(args[1:])
+                case _:
+                    print(self.get_description_precise())
         else:
-            print(self.get_description_generic())
+            print(self.get_description_precise())
