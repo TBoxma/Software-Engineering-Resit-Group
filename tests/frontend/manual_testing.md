@@ -1,22 +1,11 @@
 Test cases:
-1. Should show greeting message 
+1. Should show greeting message on app startup
     - **Expected output**: `Greetins from the Time Tracking App!
 With this app, you can conveniently add tasks and track time spent on them!
 Type 'help' for a supported list of commands:`
 
 2. Should list all commands if type 'help'
     - **Expected output:** 
-    `(argument)                      you can type one word here                                                                                                  
-    {argument1|argument2}           you can type one of the words here                                                                                          
-    [name]                          you can type several words, seperated by a space here. If you want the name to contain a space, surround it with parenthesis
-    del {task|category}             delete a task or category                                                                                                   
-    new {task|category} [name]      create one or more new tasks or categories                                                                                  
-    update {task|category}          update a task or category                                                                                                   
-    show {task|category}            show a task or category                                                                                                     
-    add {time|category}             Add spent time to an existing taskor add a category. For details, type 'help add {time|categories}'                         
-    help                            get a list of commands, ask for a specific command with 'help (command)'                                                    
-    exit                            escape the program`
-    - Actual output:
     `(argument)                      you can type one word here                                                                                                  
     {argument1|argument2}           you can type one of the words here                                                                                          
     [name]                          you can type several words, seperated by a space here. If you want the name to contain a space, surround it with parenthesis
@@ -35,14 +24,12 @@ Type 'help' for a supported list of commands:`
 4. Should create a new category with command `new`
     - **Input**: `new category hey`, then answer `y` on prompt
     - **Expected output**: category 'hey' was created.
-    - **Actual output**: category 'hey' was created.
 
     - **Expected output when run `show category`**: category hey is among outputs and has 0 tasks
 
 4. Should create a new task with command `new`
     - **Input**: `new task hello`, then answer `y` on prompt then add category `hey` then answer `y` on prompt
     - **Expected output**: `Created task 'haha'`
-    - **Actual output**: `Created task 'haha'`
 
     - **Expected output when run `show task`**: task hello is among outputs and has category `hey`
 
