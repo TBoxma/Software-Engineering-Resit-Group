@@ -26,16 +26,27 @@ class Delete(Function):
     
 
     def task(self, args:[str] = []) -> None:
-        try:
-            TaskApi.delete_by_name(' '.join(args))
-        except:
-            print("The task wasn't deleted, something went wrong")
+        for arg in args:
+            if(TaskApi.exists(arg)):
+                try:
+                    TaskApi.delete_by_name(arg)
+                except:
+                    print(f"{arg} wasn't deleted, something went wrong")
+            else:
+                print(f"{arg} doesn't exist.")
+
+
+        
 
     def category(self, args:[str] = []) -> None:
-        try:
-            CategoryApi.delete_by_name(' '.join(args))
-        except:
-            print("The category wasn't deleted, something went wrong")
+        for arg in args:
+            if(CategoryApi.exists(arg)):
+                try:
+                    CategoryApi.delete_by_name(arg)
+                except:
+                    print(f"{arg} wasn't deleted, something went wrong")
+            else:
+                print(f"{arg} doesn't exist.")
         
     #Execute the function, you pass the arguments given by the user as a list.
     #Other functions in this class handle the rest of the arguments.
