@@ -85,9 +85,6 @@ class Show(Function):
                     self.task(args[1:])
                 case 'category':
                     self.category(args[1:])
-                # The case if we want to show the time spent on a task or category.
-                case 'time':
-                    self.time_query(args[1:])
                 case _:
                     print(self.get_description_precise())
         else:
