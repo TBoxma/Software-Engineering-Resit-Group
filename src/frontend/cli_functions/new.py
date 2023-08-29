@@ -36,7 +36,6 @@ class New(Function):
                     categories=[]
                     while True:
                         category_input = click.prompt("add or remove a category", default="")
-                        print(category_input)
                         if (len(category_input)>1 and category_input[0] == '-'):
                             if(category_input[1:] in categories):
                                 categories.remove(category_input[1:])
@@ -44,7 +43,7 @@ class New(Function):
                             if(CategoryApi.exists(category_input)):
                                 categories.append(category_input)
                             else:
-                                print("Not a valid category")
+                                print(f"'{category_input}' is not a valid category")
                             
                         if click.confirm((task_name+" will have categories "+str(categories)+". Is that correct?")):
                             try:
@@ -54,7 +53,7 @@ class New(Function):
                                 print("The task wasn't created, something went wrong")
                             return
             else:
-                print((task_name+" already exists."))
+                print((f"'{task_name}' already exists."))
 
     def category(self, args:[str] = []) -> None:
         if(len(args)==0):
