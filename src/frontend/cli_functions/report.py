@@ -9,7 +9,7 @@ class Report(Function):
     reports_ = [
         "Total time",
         "Total time by categories",
-        "Total time by categories",
+        "Total time by tasks",
         "Percentage of total time by categories",
         "Percentage of total time by tasks"
     ]
