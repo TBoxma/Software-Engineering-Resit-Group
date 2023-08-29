@@ -24,9 +24,11 @@ class Update(Function):
               
     #tbd
     def task(self, args:[str] = []) -> None:
+        print("updating a task is not yet supported in this version, but it will come out in a later release")
         return
 
     def category(self, args:[str] = []) -> None:
+        print("updating a category is not yet supported in this version, but it will come out in a later release")
         return
 
     #Execute the function, you pass the arguments given by the user as a list.
@@ -38,5 +40,7 @@ class Update(Function):
                     self.task(args[1:])
                 case 'category':
                     self.category(args[1:])
+                case _:
+                    print(self.get_description_precise())
         else:
-            print(self.get_description_generic())
+            print(self.get_description_precise())

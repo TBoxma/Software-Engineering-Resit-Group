@@ -44,7 +44,6 @@ class Add(Function):
             return True
         # If the date validation goes wrong
         except ValueError:
-            print("Incorrect time format, type HH:MM-HH:MM")
             return False
 
     def time(self, args:[str] = []) -> None:
@@ -61,8 +60,10 @@ class Add(Function):
         if(len(args)==3):
             passed_date = args[2]
         if(not self.check_date_format(passed_date)):
+            print("Incorrect time format, type HH:MM-HH:MM")
             return
         if(not TaskApi.exists(task_name)):
+            print(f"'{task_name}' doesn't exist")
             return
         
         #Handle task time
@@ -114,6 +115,8 @@ class Add(Function):
                     task_time = min2-min1
         except:
             pass
+        if(not task_time):
+            print(f"'{task_time_unparsed}' is not a valid time format.")
 
         if(task_time and task_name and passed_date):
             date_entry = datetime.datetime.strptime(passed_date, "%Y-%m-%d").date()
@@ -130,7 +133,16 @@ class Add(Function):
     
     #Add categories to an existing task
     def category(self, args:[str] = []) -> None:
-        TaskApi.add_categories(args[0], args[1:])
+        if(len(args)>1):
+            if(TaskApi.exists(args[0])):
+                for category in args[1:]:
+                    if(not CategoryApi.exists(category)):
+                        print(f"categgory '{category}' doesn't exist")
+                TaskApi.add_categories(args[0], args[1:])
+            else:
+                print(f"task '{args[0]}' doesn't exist")
+        else:
+            print(self.get_description_precise(['category']))
         return
     
     def execute(self, args:[str] = []) -> None:
@@ -140,5 +152,7 @@ class Add(Function):
                     self.time(args[1:])
                 case 'category':
                     self.category(args[1:])
+                case _:
+                    print(self.get_description_precise())
         else:
-            print(self.get_description_generic())
+            print(self.get_description_precise())
